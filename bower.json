@@ -1,0 +1,21 @@
+{
+  "name": "transcode",
+  "description": "Student project",
+  "main": "index.js",
+  "authors": [
+    "Carmain & MrHalfman"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "4PJT"
+  ],
+  "homepage": "https://github.com/Carmain/transcode",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
