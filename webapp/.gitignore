@@ -1,6 +1,7 @@
 # Packages
 
 node_modules/
+static/libs/
 
 # Files & outputs
 
