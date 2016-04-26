@@ -10,6 +10,13 @@ module.exports = {
   },
   devtool: 'source-map',
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        loader: 'eslint',
+        exclude: /node_modules/,
+      }
+    ],
     loaders: [
       {
         test: /\.js$/,
@@ -28,5 +35,9 @@ module.exports = {
       }
     ]
   },
-  plugins: []
+  plugins: [],
+  eslint: {
+    configfile: path.resolve(root, './.eslintrc'),
+    formatter: require('eslint-friendly-formatter')
+  }
 };
