@@ -1,3 +1,10 @@
-var conf = require('./webpack.base');
+var configuration = require('./webpack.base');
+var webpack = require('webpack');
 
-module.exports = conf;
+configuration.plugins = configuration.plugins.concat([
+  new webpack.optimize.UglifyJsPlugin({
+    comments: false
+  })
+]);
+
+module.exports = configuration;
