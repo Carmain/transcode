@@ -1,18 +1,27 @@
+var path = require('path');
+var root = path.resolve(__dirname);
+var webpack = require('webpack');
+
 module.exports = {
   entry: './index',
   output: {
-    filename: 'dist/bundle.js'
+    path: path.resolve(__dirname, 'dist/'),
+    filename: 'bundle.js'
   },
   devtool: 'source-map',
   module: {
     loaders: [
       {
         test: /\.js$/,
-        loader: 'babel-loader',
-        query: {
-          presets: ['es2015', 'react']
-        }
+        loader: 'babel',
+	exclude: /node_modules/,
+	include: root
       },
     ]
-  }
+  },
+  plugins: [
+    new webpack.optimize.UglifyJsPlugin({
+      comments: false
+    })
+  ]
 };
