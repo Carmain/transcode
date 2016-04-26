@@ -8,6 +8,7 @@
     "b_update": "bower update",
     "start": "webpack --progress --colors --watch",
     "compile": "webpack --progress --colors",
+    "build": "node build/build.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -35,6 +36,8 @@
     "bower": "~1.7.9",
     "babel-preset-stage-2": "~6.5.0",
     "file-loader": "~0.8.5",
-    "url-loader": "~0.5.7"
+    "url-loader": "~0.5.7",
+    "shelljs": "~0.7.0",
+    "ora": "~0.2.1"
   }
 }

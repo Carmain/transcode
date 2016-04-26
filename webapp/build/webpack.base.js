@@ -1,11 +1,11 @@
 var path = require('path');
-var root = path.resolve(__dirname);
+var root = path.resolve(__dirname, '../');
 var webpack = require('webpack');
 
 module.exports = {
   entry: './index',
   output: {
-    path: path.resolve(__dirname, 'dist/'),
+    path: path.resolve(__dirname, '../dist/'),
     filename: 'bundle.js'
   },
   devtool: 'source-map',
@@ -14,11 +14,11 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
-	exclude: /node_modules/,
-	include: root
+        exclude: /node_modules/,
+        include: root
       },
       {
-	// url-loader
+        // url-loader
         test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)$/,
         loader: 'url',
         query: {
@@ -27,10 +27,5 @@ module.exports = {
         }
       }
     ]
-  },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      comments: false
-    })
-  ]
+  }
 };
