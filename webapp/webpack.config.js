@@ -17,6 +17,15 @@ module.exports = {
 	exclude: /node_modules/,
 	include: root
       },
+      {
+	// url-loader
+        test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)$/,
+        loader: 'url',
+        query: {
+          limit: 10000,
+          name: '[name]-[hash:7].[ext]'
+        }
+      }
     ]
   },
   plugins: [
