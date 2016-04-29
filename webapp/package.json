@@ -6,8 +6,6 @@
   "scripts": {
     "b_install": "bower install",
     "b_update": "bower update",
-    "start": "webpack --progress --colors --watch",
-    "compile": "webpack --progress --colors",
     "prod": "node build/build.js",
     "dev": "node build/dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
