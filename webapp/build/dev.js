@@ -1,22 +1,20 @@
-require("shelljs/global");
-
 var webpack = require('webpack');
-var ora = require('ora');
-var config = require('./webpack.dev');
+var config = require('./webpack.dev.js');
+var webpackDevServer = require('webpack-dev-server');
+var port = 8080;
 
-var spinner = ora('Searching for the 7 crystal balls...');
+var server = new webpackDevServer(webpack(config), {
+  contentBase: './',
+  quiet: false,
+  noInfo: false,
+  publicPath: config.output.publicPath,
+  stats: {colors: true}
+});
 
-spinner.start()
-rm('-rf', 'dist');
-
-webpack(config, function (err, stats) {
-  spinner.stop();
-  if (err) throw err
-  process.stdout.write(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n');
-})
+server.listen(port, function(err) {
+  if(err) {
+    console.log(err);
+  } else {
+    console.log("Listen on the port " + port);
+  }
+});
