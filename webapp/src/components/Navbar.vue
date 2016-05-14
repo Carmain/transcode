@@ -6,12 +6,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="#">Home</a>
+      <a class="navbar-brand" v-link="{ path:'/'}">Home</a>
     </div>
     <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#">Connect</a></li>
-        <li><a href="#">Register</a></li>
+        <li><a v-link="{ path:'/connect'}">Connect</a></li>
+        <li><a v-link="{ path:'/register'}">Register</a></li>
       </ul>
     </div>
   </div>
