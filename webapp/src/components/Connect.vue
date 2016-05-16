@@ -2,12 +2,12 @@
   <div id="app">
     <navbar></navbar>
     <div class ="container">
-      <h1>Registration</h1>
+      <h1>Connection</h1>
     </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar'
+import Navbar from './pieces/Navbar'
 
 export default {
   components: {

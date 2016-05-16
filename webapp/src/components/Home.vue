@@ -5,8 +5,8 @@
 </template>
 
 <script>
-import Navbar from './components/Navbar'
-import Hello from './components/Hello'
+import Navbar from './pieces/Navbar'
+import Hello from './pieces/Hello'
 
 export default {
   components: {
