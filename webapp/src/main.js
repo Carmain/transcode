@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Home from './components/Home'
 import Connect from './components/Connect'
 import Register from './components/Register'
+import Convert from './components/Convert'
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,10 @@ router.map({
   '/register': {
     name: 'register',
     component: Register
+  },
+  '/convert': {
+    name: 'convert',
+    component: Convert
   }
 })
 
