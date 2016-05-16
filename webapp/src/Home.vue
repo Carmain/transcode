@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    <div class ="container">
-      <hello></hello>
-    </div>
+    <hello></hello>
 </template>
 
 <script>
@@ -17,3 +15,9 @@ export default {
   }
 }
 </script>
+
+<style scope>
+  .navbar {
+    margin-bottom: 0px;
+  }
+</style>
