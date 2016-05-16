@@ -12,6 +12,8 @@
       <ul class="nav navbar-nav">
         <li><a v-link="{ path:'/connect'}">Connect</a></li>
         <li><a v-link="{ path:'/register'}">Register</a></li>
+        <li><a v-link="'connect'">Connect</a></li>
+        <li><a v-link="'register'">Register</a></li>
       </ul>
     </div>
   </div>
