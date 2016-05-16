@@ -38,14 +38,18 @@
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1">
+      <a v-link="'convert'" class="btn btn-info btn-raised btn-block" role="button">CONVERT MY FILES NOW !</a>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   data () {
     return {
-      converted_files: 168276,
-      user_registered: 16616,
       quotes: [
         {
           message: 'Transcode always be faster than me !',
@@ -80,9 +84,9 @@ export default {
           glyphicon: 'glyphicon glyphicon-envelope icon'
         },
         {
-          title: 'Trust is the key!',
-          text: '{{ user_registered }} people trust us. And you ?',
-          glyphicon: 'glyphicon glyphicon-user icon'
+          title: 'Clever enouth!',
+          text: 'Don\'t be embraced by unreadable files',
+          glyphicon: 'glyphicon glyphicon-sunglasses icon'
         }
       ]
     }
@@ -121,5 +125,10 @@ export default {
 
   .icon {
     font-size: 100px;
+  }
+
+  .btn {
+    margin: 40px;
+    font-size: 30px;
   }
 </style>
