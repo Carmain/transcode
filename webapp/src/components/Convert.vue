@@ -18,12 +18,13 @@
         <template v-if="logged">
           <div class="col-sm-6">
             <h2>Your stockage</h2>
-            <canvas id="pieChart" width="400" height="400"></canvas>
+            <canvas id="pieChart" width="400" height="350"></canvas>
           </div>
           <div class="col-sm-6">
+            <h2>Your last converted files</h2>
             <template v-for="file in last_files">
               <div class="row">
-                <div class="col-sm-3 text-center">
+                <div class="col-sm-3 col-xs-3 text-center">
                   <template v-if="isFileMusic(file)">
                     <span class="glyphicon glyphicon-music gl-x3" aria-hidden="true"></span>
                   </template>
@@ -31,7 +32,7 @@
                     <span class="glyphicon glyphicon-film gl-x3" aria-hidden="true"></span>
                   </template>
                 </div>
-                <div class="col-sm-9">
+                <div class="col-sm-9 col-xs-9">
                   <h3>{{ file.name }}</h3>
                   <p>Converted to : <b>{{ file.convert_to }}</b></p>
                 </div>
@@ -42,11 +43,11 @@
         </template>
         <template v-else>
           <div class="col-sm-6 text-center">
-            <span class="glyphicon glyphicon-floppy-saved gl-x6" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-floppy-saved gl-x12" aria-hidden="true"></span>
             <h2><b>{{ converted_files }}</b> converted files all around the world</h2>
           </div>
           <div class="col-sm-6 text-center">
-            <span class="glyphicon glyphicon-globe gl-x6" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-globe gl-x12" aria-hidden="true"></span>
             <h2><b>{{ registered_users }}</b> user trust the power of transcode</h2>
           </div>
         </template>
@@ -127,16 +128,21 @@ export default {
 </script>
 
 <style>
+
+  hr {
+    margin-bottom: 10px;
+  }
+
   .margin-top {
-    margin-top: 80px;
+    margin-top: 30px;
   }
 
   .gl-x3 {
     font-size: 4em;
-    margin-top: 20px;
+    padding-top: 20px;
   }
 
-  .gl-x6 {
-    font-size: 6em;
+  .gl-x12 {
+    font-size: 12em;
   }
 </style>
