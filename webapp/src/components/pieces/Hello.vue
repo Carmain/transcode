@@ -1,47 +1,44 @@
 <template>
-  <div class="hello">
-    <div class="intro text-center">
-      <h1 class="title">Transcode</h1>
-      <div id="carousel" class="carousel slide" data-ride="carousel">
-        <div class="container">
-          <div class="row">
-            <ol class="carousel-indicators col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
-              <li data-target="#carousel" data-slide-to="0" class="active"></li>
-              <li data-target="#carousel" data-slide-to="1"></li>
-              <li data-target="#carousel" data-slide-to="2"></li>
-            </ol>
-          </div>
+  <div class="intro text-center">
+    <h1 class="title">Transcode</h1>
+    <div id="carousel" class="carousel slide" data-ride="carousel">
+      <div class="container">
+        <div class="row">
+          <ol class="carousel-indicators col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+            <li data-target="#carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel" data-slide-to="1"></li>
+            <li data-target="#carousel" data-slide-to="2"></li>
+          </ol>
+        </div>
 
-          <div class="row">
-            <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
-              <div class="carousel-inner pitch">
-                <div v-for="quote in quotes" v-bind:class="quote.css_class">
-                  <p>{{ quote.message}}</p>
-                  <small><cite> {{quote.author}}</cite></small>
-                </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-xs-10 col-xs-offset-1">
+            <div class="carousel-inner pitch">
+              <div v-for="quote in quotes" v-bind:class="quote.css_class">
+                <p>{{ quote.message}}</p>
+                <small><cite> {{quote.author}}</cite></small>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div class="container-fluid">
-      <div class="row square-container text-center">
-        <div v-for="square in squares" class="col-md-3 col-sm-6 square">
-          <!-- FIXME: The big icon set a margin on the right when we reduce the page -->
-          <span v-bind:class="square.glyphicon" aria-hidden="true"></span>
-          <div class="caption">
-              <h2>{{ square.title }}</h2>
-          </div>
-          <p> {{ square.text }}</p>
+  <div class="container-fluid">
+    <div class="row square-container text-center">
+      <div v-for="square in squares" class="col-md-3 col-sm-6 square">
+        <span v-bind:class="square.glyphicon" aria-hidden="true"></span>
+        <div class="caption">
+            <h2>{{ square.title }}</h2>
         </div>
+        <p> {{ square.text }}</p>
       </div>
+    </div>
 
-      <div class="row">
-        <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
-          <a v-link="'convert'" class="btn btn-info btn-raised btn-block" role="button">CONVERT MY FILES NOW !</a>
-        </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 col-xs-10 col-xs-offset-1">
+        <a v-link="'convert'" class="btn btn-primary btn-block" role="button">CONVERT MY FILES NOW !</a>
       </div>
     </div>
   </div>
