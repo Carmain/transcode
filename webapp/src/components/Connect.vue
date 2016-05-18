@@ -4,15 +4,13 @@
     <div class ="container">
       <h1>Connection</h1>
       <form role="form">
-        <div class="form-group label-floating">
+        <div class="form-group">
           <label class="control-label" for="email">Email address</label>
           <input class="form-control" id="email" type="email">
-          <p class="help-block">You should really write something here</p>
         </div>
-        <div class="form-group label-floating">
+        <div class="form-group">
           <label class="control-label" for="password">Password</label>
           <input class="form-control" id="password" type="password">
-          <p class="help-block">You should really write something here</p>
         </div>
         <div class="checkbox">
           <label>
