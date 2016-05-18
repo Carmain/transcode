@@ -3,15 +3,22 @@
     <navbar></navbar>
     <div class ="container">
       <h1>Convert</h1>
+
       <div class="form-group">
-        <label class="control-label" for="inputFile2">Your file here</label>
-        <input type="file" id="inputFile2" multiple="">
-        <input type="text" readonly="" class="form-control" placeholder="Please give us the file you want to convert...">
+        <label class="control-label" for="upload">Upload your file here</label>
+        <input type="file" id="upload">
       </div>
+
+      <div class="form-group">
+        <label class="control-label" for="url">Or provide us an URL</label>
+        <input class="form-control" id="url" type="text">
+      </div>
+
       <div class="row margin-top">
         <template v-if="logged">
           <div class="col-sm-6">
             <h2>Your stockage</h2>
+            <canvas id="pieChart" width="400" height="400"></canvas>
           </div>
           <div class="col-sm-6">
             <template v-for="file in last_files">
@@ -29,6 +36,7 @@
                   <p>Converted to : <b>{{ file.convert_to }}</b></p>
                 </div>
               </div>
+              <hr />
             </template>
           </div>
         </template>
@@ -48,6 +56,7 @@
 
 <script>
 import Navbar from './pieces/Navbar'
+import Chart from 'chart.js'
 
 export default {
   components: {
@@ -58,6 +67,7 @@ export default {
       logged: true,
       converted_files: 654654,
       registered_users: 89764,
+      memory: [1654, 16819],
 
       last_files: [
         {
@@ -88,9 +98,29 @@ export default {
       ]
     }
   },
+  ready () {
+    this.displayChart()
+  },
   methods: {
     isFileMusic: function (file) {
       return file.type !== 'video'
+    },
+    displayChart: function () {
+      var ctx = document.getElementById('pieChart').getContext('2d')
+      var myChart = new Chart(ctx, { // eslint-disable-line
+        type: 'pie',
+        data: {
+          labels: ['Used', 'Free'],
+          datasets: [{
+            backgroundColor: [
+              '#36A2EB',
+              '#FFCE56'
+            ],
+            label: 'Used memory',
+            data: this.memory
+          }]
+        }
+      })
     }
   }
 }
