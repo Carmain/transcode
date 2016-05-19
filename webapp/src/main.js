@@ -8,6 +8,7 @@ import Home from './components/Home'
 import Connect from './components/Connect'
 import Register from './components/Register'
 import Convert from './components/Convert'
+import NotFound from './components/NotFound'
 
 Vue.use(VueRouter)
 Vue.use(VueResource)
@@ -35,7 +36,15 @@ router.map({
   '/convert': {
     name: 'convert',
     component: Convert
+  },
+  '/404': {
+    name: '404',
+    component: NotFound
   }
+})
+
+router.redirect({
+  '*': '404'
 })
 
 router.start(App, '#app')
