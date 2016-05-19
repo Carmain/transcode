@@ -11,13 +11,35 @@
       </div>
       <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li><a v-link="'connect'">Connect</a></li>
-          <li><a v-link="'register'">Register</a></li>
+          <template v-if="user.authenticated">
+            <li><a @click="logout()">Logout</a></li>
+          </template>
+          <template v-else>
+            <li><a v-link="'connect'">Connect</a></li>
+            <li><a v-link="'register'">Register</a></li>
+          </template>
         </ul>
       </div>
     </div>
   </nav>
 </template>
+
+<script>
+  import auth from '../../auth'
+
+  export default {
+    data () {
+      return {
+        user: auth.user
+      }
+    },
+    methods: {
+      logout () {
+        auth.logout()
+      }
+    }
+  }
+</script>
 
 <style scope>
   .navbar-default {
