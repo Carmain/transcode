@@ -36,6 +36,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'api',
+    'rest_framework'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -47,9 +50,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'api.urls'
+ROOT_URLCONF = 'transcode.urls'
 
-WSGI_APPLICATION = 'api.wsgi.application'
+WSGI_APPLICATION = 'transcode.wsgi.application'
 
 
 # Database
@@ -66,7 +69,7 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
+AUTH_USER_MODEL = "api.User"
 TIME_ZONE = 'UTC'
 
 USE_I18N = True
