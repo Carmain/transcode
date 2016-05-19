@@ -1,11 +1,6 @@
 import Vue from "vue";
 import router from "../main";
-
-const API_URL = "/api";
-const LOGIN_URL = API_URL + "/auth/";
-const PROFILE_URL = API_URL + "/me/";
-const REFRESH_URL = API_URL + "/refresh-jwt/";
-const TOKEN_EXPIRATION  = 300;
+import config from "../config.js"
 
 export default {
   user: {

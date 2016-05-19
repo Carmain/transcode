@@ -1,8 +1,14 @@
 .DS_Store
+src/config.js
+
+dist/
 node_modules/
 static/libs/
-dist/
+
+# logs
 npm-debug.log
 selenium-debug.log
+
+# tests
 test/unit/coverage
 test/e2e/reports

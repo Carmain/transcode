@@ -1,0 +1,13 @@
+const API_URL = "//transcode_wololo.wololo.fr";
+const LOGIN_URL = API_URL + "/auth/";
+const PROFILE_URL = API_URL + "/me/";
+const REFRESH_URL = API_URL + "/refresh-jwt/";
+const TOKEN_EXPIRATION  = 300;
+
+export default {
+  API_URL,
+  LOGIN_URL,
+  PROFILE_URL,
+  REFRESH_URL,
+  TOKEN_EXPIRATION
+}
