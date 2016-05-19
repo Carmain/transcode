@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import VueResource from 'vue-resource'
 
 import Home from './components/Home'
 import Connect from './components/Connect'
@@ -8,6 +9,7 @@ import Convert from './components/Convert'
 import auth from "./auth";
 
 Vue.use(VueRouter)
+Vue.use(VueResource);
 
 auth.checkAuth();
 
