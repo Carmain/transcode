@@ -2,19 +2,19 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import VueResource from 'vue-resource'
 
+import App from './App'
+import auth from './auth';
 import Home from './components/Home'
 import Connect from './components/Connect'
 import Register from './components/Register'
 import Convert from './components/Convert'
-import auth from "./auth";
 
 Vue.use(VueRouter)
-Vue.use(VueResource);
+Vue.use(VueResource)
+auth.checkAuth()
 
-auth.checkAuth();
+Vue.http.headers.common['Authorization'] = auth.getAuthHeader()
 
-Vue.http.headers.common["Authorization"] = auth.getAuthHeader();
-let App = Vue.extend({})
 let router = new VueRouter({
   history: true
 })
@@ -39,3 +39,4 @@ router.map({
 })
 
 router.start(App, '#app')
+export default router;
