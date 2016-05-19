@@ -1,9 +1,10 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    {{ #if authState.checked }}
+    {{ authState.checked }}
+    <template v-if='authState.checked'>
       <router-view></router-view>
-    {{ /if }}
+    </template>
   </div>
 </template>
 
