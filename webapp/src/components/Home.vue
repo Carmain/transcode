@@ -5,12 +5,10 @@
 </template>
 
 <script>
-import Navbar from './pieces/Navbar'
 import Hello from './pieces/Hello'
 
 export default {
   components: {
-    Navbar,
     Hello
   }
 }

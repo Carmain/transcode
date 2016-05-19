@@ -1,34 +1,43 @@
 <template>
   <div id="app">
-    <navbar></navbar>
     <div class ="container">
       <h1>Connection</h1>
       <form role="form">
         <div class="form-group">
-          <label class="control-label" for="email">Email address</label>
-          <input class="form-control" id="email" type="email">
+          <label class="control-label" for="username">Username</label>
+          <input class="form-control" id="username" type="text" v-model="credentials.username">
         </div>
         <div class="form-group">
           <label class="control-label" for="password">Password</label>
-          <input class="form-control" id="password" type="password">
+          <input class="form-control" id="password" type="password" v-model="credentials.password">
         </div>
         <div class="checkbox">
           <label>
             <input type="checkbox"> Remember me
           </label>
         </div>
-        <button type="submit" class="btn btn-raised btn-primary pull-right">Submit</button>
+        <button type="button" class="btn btn-raised btn-primary pull-right" @click="submit()">Submit</button>
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import Navbar from './pieces/Navbar'
+import auth from '../auth'
 
 export default {
-  components: {
-    Navbar
+  data () {
+    return {
+      credentials: {
+        username: '',
+        password: ''
+      }
+    }
+  },
+  methods: {
+    submit () {
+      auth.login(this.credentials, 'convert')
+    }
   }
 }
 </script>

@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <navbar></navbar>
     <div class ="container">
       <h1>Convert</h1>
 
@@ -56,13 +55,9 @@
 </template>
 
 <script>
-import Navbar from './pieces/Navbar'
 import Chart from 'chart.js'
 
 export default {
-  components: {
-    Navbar
-  },
   data () {
     return {
       logged: true,
