@@ -12,6 +12,7 @@
       <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
         <ul class="nav navbar-nav">
           <template v-if="user.authenticated">
+            <li><a v-link="'convert'">Convert</a></li>
             <li><a @click="logout()">Logout</a></li>
           </template>
           <template v-else>
@@ -35,7 +36,8 @@
     },
     methods: {
       logout () {
-        auth.logout()
+        auth.logout();
+        this.$route.router.go('/');
       }
     }
   }
