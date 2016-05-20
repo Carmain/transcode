@@ -1,10 +1,11 @@
 <template>
-  <div id="app">
     <template v-if="user.authenticated">
-      <home-logged></home-logged>
+      <div class="container">
+        <homepage></homepage>
+      </div>
     </template>
     <template v-else>
-      <home-guest></home-guest>
+      <welcome></welcome>
     </template>
 </template>
 
