@@ -1,7 +1,6 @@
 <template>
   <div id="app">
     <navbar></navbar>
-    {{ authState.checked }}
     <template v-if='authState.checked'>
       <router-view></router-view>
     </template>
