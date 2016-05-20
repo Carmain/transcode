@@ -1,49 +1,49 @@
 <template>
-  <div id="app">
-    <div class ="container">
-      <h1>Registration</h1>
-      <form role="form">
-        <div class="row">
-          <div class="col-md-10 col-sm-10">
-            <div class="form-group">
-              <label class="control-label" for="username">Username</label>
-              <input class="form-control" id="username" type="text" v-model="credentials.username">
-            </div>
-            <div class="form-group">
-              <label class="control-label" for="email">Email address</label>
-              <input class="form-control" id="email" type="email" v-model="credentials.email" @change="getGravatar()">
-            </div>
+  <div class ="container">
+    <h1>Registration</h1>
+    <form role="form">
+      <div class="row">
+        <div class="col-md-10 col-sm-10">
+          <div class="form-group">
+            <label class="control-label" for="username">Username</label>
+            <input class="form-control" id="username" type="text" v-model="credentials.username">
           </div>
-          <div class="col-md-2 col-sm-2">
+          <div class="form-group">
+            <label class="control-label" for="email">Email address</label>
+            <input class="form-control" id="email" type="email" v-model="credentials.email" @change="getGravatar()">
+          </div>
+        </div>
+        <div class="col-md-2 col-sm-2">
+          <a href="https://gravatar.com" title="Gravatar" target="_blank">
             <img v-bind:src="gravatar"/>
-          </div>
+          </a>
         </div>
-        <div class="row">
-          <div class="form-group col-md-6 col-sm-6">
-            <label class="control-label" for="first-name">First name</label>
-            <input class="form-control" id="first-name" type="text" v-model="credentials.first_name">
-          </div>
-          <div class="form-group col-md-6 col-sm-6">
-            <label class="control-label" for="last-name">Last name</label>
-            <input class="form-control" id="last-name" type="text" v-model="credentials.last_name">
-          </div>
+      </div>
+      <div class="row">
+        <div class="form-group col-md-6 col-sm-6">
+          <label class="control-label" for="first-name">First name</label>
+          <input class="form-control" id="first-name" type="text" v-model="credentials.first_name">
         </div>
-        <div class="form-group">
-          <label class="control-label" for="birthdate">Birthdate</label>
-          <input class="form-control" id="birthdate" type="date" v-model="credentials.birthdate">
+        <div class="form-group col-md-6 col-sm-6">
+          <label class="control-label" for="last-name">Last name</label>
+          <input class="form-control" id="last-name" type="text" v-model="credentials.last_name">
         </div>
-        <hr />
-        <div class="form-group">
-          <label class="control-label" for="password">Password</label>
-          <input class="form-control" id="password" type="password" v-model="credentials.password">
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="password-confirm">Confirm password</label>
-          <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
-        </div>
-        <button type="submit" class="btn btn-raised btn-primary pull-right">Submit</button>
-      </form>
-    </div>
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="birthdate">Birthdate</label>
+        <input class="form-control" id="birthdate" type="date" v-model="credentials.birthdate">
+      </div>
+      <hr />
+      <div class="form-group">
+        <label class="control-label" for="password">Password</label>
+        <input class="form-control" id="password" type="password" v-model="credentials.password">
+      </div>
+      <div class="form-group">
+        <label class="control-label" for="password-confirm">Confirm password</label>
+        <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
+      </div>
+      <button type="submit" class="btn btn-raised btn-primary pull-right">Submit</button>
+    </form>
   </div>
 </template>
 

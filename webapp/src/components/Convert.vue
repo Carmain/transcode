@@ -1,27 +1,26 @@
 <template>
-  <div id="app">
-    <div class ="container">
-      <h1>Convert</h1>
+  <div class ="container">
+    <h1>Convert</h1>
 
-      <div class="form-group">
-        <label class="control-label" for="upload">Upload your file here</label>
-        <input type="file" id="upload">
-      </div>
-
-      <div class="form-group">
-        <label class="control-label" for="url">Or provide us an URL</label>
-        <input class="form-control" id="url" type="text">
-      </div>
-
-      <div class="row margin-top">
-        <template v-if="user.authenticated">
-          <convert-logged></convert-logged>
-        </template>
-        <template v-else>
-          <convert-guest></convert-guest>
-        </template>
-      </div>
+    <div class="form-group">
+      <label class="control-label" for="upload">Upload your file here</label>
+      <input type="file" id="upload">
     </div>
+
+    <div class="form-group">
+      <label class="control-label" for="url">Or provide us an URL</label>
+      <input class="form-control" id="url" type="text">
+    </div>
+
+    <div class="row margin-top">
+      <template v-if="user.authenticated">
+        <convert-logged></convert-logged>
+      </template>
+      <template v-else>
+        <convert-guest></convert-guest>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script>
