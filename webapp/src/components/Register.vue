@@ -3,7 +3,7 @@
     <h1>Registration</h1>
     <form role="form">
       <div class="row">
-        <div class="col-md-10 col-sm-10">
+        <div class="col-md-10 col-sm-9 col-xs-8">
           <div class="form-group">
             <label class="control-label" for="username">Username</label>
             <input class="form-control" id="username" type="text" v-model="credentials.username">
@@ -13,9 +13,9 @@
             <input class="form-control" id="email" type="email" v-model="credentials.email" @change="getGravatar()">
           </div>
         </div>
-        <div class="col-md-2 col-sm-2">
+        <div class="col-md-2 col-sm-3 col-xs-4">
           <a href="https://gravatar.com" title="Gravatar" target="_blank">
-            <img v-bind:src="gravatar"/>
+            <img v-bind:src="gravatar" class="img-responsive center-block"/>
           </a>
         </div>
       </div>
@@ -53,7 +53,7 @@ import md5 from 'blueimp-md5'
   export default {
     data () {
       return {
-        gravatar: 'http://www.gravatar.com/avatar/?s=150',
+        gravatar_url: 'http://www.gravatar.com/avatar/',
         credentials: {
           username: '',
           email: '',
@@ -65,14 +65,17 @@ import md5 from 'blueimp-md5'
         }
       }
     },
-    ready () {
+    computed: {
+      gravatar: function() {
+        return this.gravatar_url + '?s=130'
+      }
     },
     methods: {
       getGravatar () {
         let email = this.credentials.email;
         if (email != '') {
           let hash = md5(email);
-          this.gravatar = 'http://www.gravatar.com/avatar/' + hash + "?s=150";
+          this.gravatar_url = 'http://www.gravatar.com/avatar/' + hash;
         }
       }
     }
