@@ -36,7 +36,7 @@ export default {
   },
   methods: {
     submit () {
-      auth.login(this.credentials, 'convert')
+      auth.login(this.credentials, '/')
     }
   }
 }

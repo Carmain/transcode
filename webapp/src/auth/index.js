@@ -12,7 +12,7 @@ export default {
   },
 
   login(credentials, redirect) {
-    Vue.http.post(LOGIN_URL, credentials).then((res) => {
+    Vue.http.post(config.LOGIN_URL, credentials).then((res) => {
       localStorage.setItem("jwt", res.data.token);
 
       return this.loadUserInformations();
@@ -32,7 +32,7 @@ export default {
     }
 
     return new Promise ((resolve, reject) => {
-      Vue.http.get(PROFILE_URL).then((res) => {
+      Vue.http.get(config.PROFILE_URL).then((res) => {
         resolve(res.data);
       });
     });
@@ -44,7 +44,7 @@ export default {
     promise.then(() => {
       setTimeout(() => {
         this.refreshTokenJob();
-      }, (TOKEN_EXPIRATION - 60) * 1000);
+      }, (config.TOKEN_EXPIRATION - 60) * 1000);
     });
 
     return promise;
@@ -52,7 +52,7 @@ export default {
 
   refreshToken() {
     return new Promise ((resolve, reject) => {
-      Vue.http.post(REFRESH_URL, {token: this.getToken()}).then((res) => {
+      Vue.http.post(config.REFRESH_URL, {token: this.getToken()}).then((res) => {
         if (res.data.token) {
           localStorage.setItem("jwt", res.data.token);
           resolve();
