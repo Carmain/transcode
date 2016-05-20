@@ -94,12 +94,10 @@ export default {
 </script>
 
 <style scoped>
-  .navbar {
-    margin-bottom: 0px;
-  }
-  
+
   .intro {
     background-color: #333;
+    margin-top: -20px;
   }
 
   .title {
