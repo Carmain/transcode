@@ -1,16 +1,16 @@
 <template>
   <div id="app">
     <template v-if="user.authenticated">
-      <homepage></homepage>
+      <home-logged></home-logged>
     </template>
     <template v-else>
-      <hello></hello>
+      <home-guest></home-guest>
     </template>
 </template>
 
 <script>
-import Hello from './pieces/Hello'
-import Homepage from './pieces/Homepage'
+import Welcome from './pieces/Home_Guest'
+import Homepage from './pieces/Home_logged'
 import auth from '../auth'
 
 export default {
@@ -20,7 +20,7 @@ export default {
     }
   },
   components: {
-    Hello,
+    Welcome,
     Homepage
   }
 }
