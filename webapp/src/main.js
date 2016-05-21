@@ -8,6 +8,7 @@ import Home from './components/Home'
 import Connect from './components/Connect'
 import Register from './components/Register'
 import Convert from './components/Convert'
+import Update from './components/Update'
 import NotFound from './components/NotFound'
 
 Vue.use(VueRouter)
@@ -36,6 +37,10 @@ router.map({
   '/convert': {
     name: 'convert',
     component: Convert
+  },
+  '/update-my-profile': {
+    name: 'update',
+    component: Update
   },
   '/404': {
     name: '404',

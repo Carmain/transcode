@@ -13,6 +13,7 @@
         <ul class="nav navbar-nav">
           <template v-if="user.authenticated">
             <li><a v-link="'convert'">Convert</a></li>
+            <li><a v-link="'update'">Update my profile</a></li>
             <li><a @click="logout()">Logout</a></li>
           </template>
           <template v-else>
