@@ -10,13 +10,11 @@
           </div>
           <div class="form-group">
             <label class="control-label" for="email">Email address</label>
-            <input class="form-control" id="email" type="email" v-model="credentials.email" @change="getGravatar()">
+            <input class="form-control" id="email" type="email" v-model="credentials.email">
           </div>
         </div>
         <div class="col-md-2 col-sm-3 col-xs-4">
-          <a href="https://gravatar.com" title="Gravatar" target="_blank">
-            <img v-bind:src="gravatar" class="img-responsive center-block"/>
-          </a>
+          <gravatar size='130' v-bind:email='credentials.email'></gravatar>
         </div>
       </div>
       <div class="row">
@@ -48,36 +46,24 @@
 </template>
 
 <script>
-import md5 from 'blueimp-md5'
+import Gravatar from './pieces/Gravatar'
 
-  export default {
-    data () {
-      return {
-        gravatar_url: 'http://www.gravatar.com/avatar/',
-        credentials: {
-          username: '',
-          email: '',
-          first_name: '',
-          last_name: '',
-          birthdate: '',
-          password: '',
-          password_confirmation: ''
-        }
-      }
-    },
-    computed: {
-      gravatar: function() {
-        return this.gravatar_url + '?s=130'
-      }
-    },
-    methods: {
-      getGravatar () {
-        let email = this.credentials.email;
-        if (email != '') {
-          let hash = md5(email);
-          this.gravatar_url = 'http://www.gravatar.com/avatar/' + hash;
-        }
+export default {
+  components: {
+    Gravatar
+  },
+  data () {
+    return {
+      credentials: {
+        username: '',
+        email: '',
+        first_name: '',
+        last_name: '',
+        birthdate: '',
+        password: '',
+        password_confirmation: ''
       }
     }
-  };
+  }
+};
 </script>
