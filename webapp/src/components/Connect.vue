@@ -15,7 +15,7 @@
           <input type="checkbox"> Remember me
         </label>
       </div>
-      <button type="button" class="btn btn-raised btn-primary pull-right" @click="submit()">Submit</button>
+      <button type="button" class="btn btn-primary pull-right" @click="submit()">Submit</button>
     </form>
   </div>
 </template>

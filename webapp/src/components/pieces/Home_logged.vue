@@ -7,6 +7,7 @@
         <th>File name</th>
         <th>Converted into</th>
         <th>Date</th>
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -23,6 +24,14 @@
           <td>{{ file.name }}</td>
           <td>{{ file.convert_to }}</td>
           <td>{{ file.date }}</td>
+          <td>
+            <button type="button" class="btn btn-default btn-xs" @click="view()">
+              View
+            </button>
+            <button type="button" class="btn btn-danger btn-xs" @click="remove()">
+              Remove
+            </button>
+          </td>
         </tr>
       </template>
     </tbody>
@@ -70,6 +79,14 @@
     methods: {
       isFileMusic: function (file) {
         return file.type !== 'video'
+      },
+
+      view: function () {
+        alert("View");
+      },
+
+      remove: function () {
+        alert("Remove")
       }
     }
   }
