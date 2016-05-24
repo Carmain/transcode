@@ -40,6 +40,7 @@
         <label class="control-label" for="password-confirm">Confirm password</label>
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
+      <div class="g-recaptcha" data-sitekey="6LcRmiATAAAAADQGY_hdnDyvCrRF-VgUZhEXWqPJ"></div>
       <button type="submit" class="btn btn-primary pull-right">Submit</button>
     </form>
   </div>
