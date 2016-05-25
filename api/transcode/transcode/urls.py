@@ -11,4 +11,7 @@ urlpatterns = [
     url(r'^auth/$', obtain_jwt_token),
     url(r'^refresh-jwt/$', refresh_jwt_token),
     url(r'^me/$', api_views.CurrentUserView.as_view()),
+    url(r'^upload-start/$', api_views.UploadStart.as_view()),
+    url(r'^upload-chunk/(?P<uuid>[0-9a-f]{32})/$', api_views.UploadChunk.as_view()),
+    url(r'^upload-end/(?P<uuid>[0-9a-f]{32})/$', api_views.UploadEnd.as_view()),
 ]

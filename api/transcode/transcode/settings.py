@@ -93,6 +93,8 @@ JWT_AUTH = {
   'JWT_ALLOW_REFRESH': True
 }
 
+UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
