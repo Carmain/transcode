@@ -40,18 +40,20 @@
         <label class="control-label" for="password-confirm">Confirm password</label>
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
-      <div class="g-recaptcha" data-sitekey="6LcRmiATAAAAADQGY_hdnDyvCrRF-VgUZhEXWqPJ"></div>
+      <vue-recaptcha key="6LcRmiATAAAAADQGY_hdnDyvCrRF-VgUZhEXWqPJ"></vue-recaptcha>
       <button type="submit" class="btn btn-primary pull-right">Submit</button>
     </form>
   </div>
 </template>
 
 <script>
+import VueRecaptcha from 'vue-recaptcha';
 import Gravatar from './pieces/Gravatar'
 
 export default {
   components: {
-    Gravatar
+    Gravatar,
+    VueRecaptcha
   },
   data () {
     return {
