@@ -24,7 +24,7 @@ class CurrentUserView(APIView):
 class UploadStart(APIView):
   parser_classes = (JSONParser,)
 
-  def post(self, request):
+  def get(self, request):
     fileUUID = uuid.uuid4().hex
     filePath = path.join(settings.UPLOAD_DIRECTORY, fileUUID)
 
