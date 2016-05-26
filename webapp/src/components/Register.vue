@@ -43,17 +43,20 @@
       <vue-recaptcha key="6LcRmiATAAAAADQGY_hdnDyvCrRF-VgUZhEXWqPJ"></vue-recaptcha>
       <button type="submit" class="btn btn-primary pull-right">Submit</button>
     </form>
+    <message tag="danger" message="This is a test"></message>
   </div>
 </template>
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
-import Gravatar from './pieces/Gravatar'
+import Gravatar from './pieces/Gravatar';
+import Message from './pieces/Message';
 
 export default {
   components: {
     Gravatar,
-    VueRecaptcha
+    VueRecaptcha,
+    Message
   },
   data () {
     return {
