@@ -4,7 +4,7 @@ import datetime
 import re
 
 from api.models import User
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -86,7 +86,7 @@ class Register(APIView):
                 'error_msg': "Password and password confirmation aren't equals"
             })
 
-        user = User.objects.create(
+        user, created = User.objects.get_or_create(
             email=request.data.get('email'),
             username=request.data.get('username'),
             first_name=request.data.get('first_name'),
@@ -94,10 +94,13 @@ class Register(APIView):
             birthdate=datetime.datetime.strptime(raw_date, "%Y-%m-%d").date()
         )
 
-        user.set_password(request.data.get('password'))
-        user.save()
-
-        return Response({'success': True})
+        if created:
+            user.set_password(request.data.get('password'))
+            user.save()
+            return Response(
+                {'success': True},
+                status=status.HTTP_201_CREATED
+            )
 
 
 class BinaryParser(BaseParser):
