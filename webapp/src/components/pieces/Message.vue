@@ -10,7 +10,7 @@
 <script>
 export default {
   props: [
-    'message'
+    'message',
     'tag'
   ]
 }
