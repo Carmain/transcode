@@ -40,7 +40,7 @@
         <label class="control-label" for="password-confirm">Confirm password</label>
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
-      <vue-recaptcha key="6LcRmiATAAAAADQGY_hdnDyvCrRF-VgUZhEXWqPJ"></vue-recaptcha>
+      <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
       <button type="submit" class="btn btn-primary pull-right">Submit</button>
     </form>
     <message tag="danger" message="This is a test"></message>
@@ -51,6 +51,9 @@
 import VueRecaptcha from 'vue-recaptcha';
 import Gravatar from './pieces/Gravatar';
 import Message from './pieces/Message';
+import config from "../config.js";
+
+console.log(config.RECAPTCHA_PUBLIC_KEY);
 
 export default {
   components: {
@@ -68,7 +71,8 @@ export default {
         birthdate: '',
         password: '',
         password_confirmation: ''
-      }
+      },
+      recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
     }
   }
 };
