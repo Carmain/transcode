@@ -1,25 +1,24 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import VueResource from 'vue-resource'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import VueResource from 'vue-resource';
 
-import App from './App'
+import App from './App';
 import auth from './auth';
-import Home from './components/Home'
-import Connect from './components/Connect'
-import Register from './components/Register'
-import Convert from './components/Convert'
-import Update from './components/Update'
-import NotFound from './components/NotFound'
+import Home from './components/Home';
+import Connect from './components/Connect';
+import Register from './components/Register';
+import Convert from './components/Convert';
+import Update from './components/Update';
+import NotFound from './components/NotFound';
 
-Vue.use(VueRouter)
-Vue.use(VueResource)
-auth.checkAuth()
-
-Vue.http.headers.common['Authorization'] = auth.getAuthHeader()
+Vue.use(VueRouter);
+Vue.use(VueResource);
+auth.checkAuth();
+auth.setVueHeader();
 
 let router = new VueRouter({
   history: true
-})
+});
 
 router.map({
   '/': {
@@ -46,11 +45,11 @@ router.map({
     name: '404',
     component: NotFound
   }
-})
+});
 
 router.redirect({
   '*': '404'
-})
+});
 
-router.start(App, '#app')
+router.start(App, '#app');
 export default router;

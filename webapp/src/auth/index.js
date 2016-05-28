@@ -1,6 +1,6 @@
 import Vue from "vue";
 import router from "../main";
-import config from "../config.js"
+import config from "../config.js";
 
 export default {
   user: {
@@ -90,5 +90,13 @@ export default {
 
   getToken () {
     return localStorage.getItem("jwt");
+  },
+
+  setVueHeader () {
+    if (!this.user.authenticated) {
+      return;
+    }
+
+    Vue.http.headers.common["Authorization"] = this.getAuthHeader();
   }
-}
+};
