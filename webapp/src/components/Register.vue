@@ -41,9 +41,11 @@
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
       <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
-      <button type="submit" class="btn btn-primary pull-right">Submit</button>
+      <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
-    <message tag="danger" message="This is a test"></message>
+    <template v-for="message in messages">
+      <message tag="danger" message="This is a test"></message>
+    </template>
   </div>
 </template>
 
@@ -72,7 +74,25 @@ export default {
         password: '',
         password_confirmation: ''
       },
+      messages: [],
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
+    }
+  },
+  methods: {
+    register: function() {
+
+
+      let register_url = config.API_URL + '/register/'
+      this.$http.post(register_url, this.credentials).then(
+        function (response) {
+          console.log("Success");
+          console.log(response);
+        },
+        function (response) {
+          console.log("Error");
+          console.log(response);
+        }
+      );
     }
   }
 };
