@@ -43,9 +43,7 @@
       <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
-    <template v-for="message in messages">
-      <message tag="danger" message="This is a test"></message>
-    </template>
+    <message v-show="message.content" v-bind:tag="message.tag" v-bind:message="message.content"></message>
   </div>
 </template>
 
@@ -54,8 +52,6 @@ import VueRecaptcha from 'vue-recaptcha';
 import Gravatar from './pieces/Gravatar';
 import Message from './pieces/Message';
 import config from "../config.js";
-
-console.log(config.RECAPTCHA_PUBLIC_KEY);
 
 export default {
   components: {
@@ -74,23 +70,24 @@ export default {
         password: '',
         password_confirmation: ''
       },
-      messages: [],
+      message: {
+        tag: 'danger',
+        content: '',
+        show: false
+      },
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
-    }
+    };
   },
   methods: {
     register: function() {
-
-
-      let register_url = config.API_URL + '/register/'
+      let register_url = config.API_URL + '/register/';
       this.$http.post(register_url, this.credentials).then(
         function (response) {
           console.log("Success");
           console.log(response);
         },
         function (response) {
-          console.log("Error");
-          console.log(response);
+          this.message.content = response.data.error_msg;
         }
       );
     }

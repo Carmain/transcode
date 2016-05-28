@@ -31,60 +31,60 @@ class Register(APIView):
             return Response({
                 'success': False,
                 'error_msg': 'Missing first name'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         if not last_name:
             return Response({
                 'success': False,
                 'error_msg': 'Missing last name'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         if not username:
             return Response({
                 'success': False,
                 'error_msg': 'Missing username'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
         else:
             if User.objects.filter(username=username).exists():
                 return Response({
                     'success': False,
                     'error_msg': 'This username is already used'
-                })
+                }, status=status.HTTP_400_BAD_REQUEST)
             else:
                 reg_username = re.compile("[a-zA-Z0-9_-]{3,16}")
                 if not reg_username.match(username):
                     return Response({
                         'success': False,
                         'error_msg': 'The username is not a valid'
-                    })
+                    }, status=status.HTTP_400_BAD_REQUEST)
 
         if not email:
             return Response({
                 'success': False,
                 'error_msg': 'Missing email'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
         else:
             if User.objects.filter(email=email).exists():
                 return Response({
                     'success': False,
                     'error_msg': 'This email is already used'
-                })
+                }, status=status.HTTP_400_BAD_REQUEST)
 
         if not password:
             return Response({
                 'success': False,
                 'error_msg': 'Missing password'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
         elif not password_confirmation:
             return Response({
                 'success': False,
                 'error_msg': 'Missing password confirmation'
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
         elif password != password_confirmation:
             return Response({
                 'success': False,
                 'error_msg': "Password and password confirmation aren't equals"
-            })
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         user, created = User.objects.get_or_create(
             email=request.data.get('email'),
