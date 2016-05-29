@@ -96,7 +96,7 @@ JWT_AUTH = {
 UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
 
 SUPPORTED_FILES = (
-    ("mvk", "Mastroska"),
+    ("mvk", "Matroska"),
     ("png", "PNG Image"),
     ("tmp", "Temporary"),
 )
