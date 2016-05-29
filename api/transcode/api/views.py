@@ -3,7 +3,7 @@ import uuid
 import datetime
 import re
 
-from api.models import User
+from api.models import User, TranscodeFile, UploadSession
 from rest_framework import viewsets, status
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
@@ -120,11 +120,12 @@ class UploadStart(APIView):
     parser_classes = (JSONParser,)
 
     def get(self, request):
-        fileUUID = uuid.uuid4().hex
-        filePath = path.join(settings.UPLOAD_DIRECTORY, fileUUID)
+        transcodeFile = TranscodeFile.objects.create()
+        uploadSession = UploadSession.objects.create(file=transcodeFile)
 
         return Response({
-            'uuid': fileUUID
+            'success': True,
+            'uuid': uploadSession.uuid
         })
 
 
@@ -132,25 +133,35 @@ class UploadChunk(APIView):
     parser_classes = (BinaryParser,)
 
     def post(self, request, uuid):
-        fpath = path.join(settings.UPLOAD_DIRECTORY, uuid)
-        userFile = open(fpath, "ab")
-        userFile.write(bytes(request.data))
+        uploadSession = UploadSession.objects.get(uuid=uuid)
+        userFile = open(uploadSession.file.path, "ab")
+        userFile.write(request.data)
 
-        return Response({'success': True})
+        uploadSession.state = 1
+        uploadSession.receivedBytes = len(request.data)
+        uploadSession.save()
+
+        return Response({'success': True, 'remains': uploadSession.remainingBytes})
 
 
 class UploadEnd(APIView):
     parser_classes = (JSONParser, )
 
     def post(self, request, uuid):
+        uploadSession = UploadSession.objects.get(uuid=uuid)
         user_file_md5 = request.data.get("md5")
         hash_md5 = hashlib.md5()
-        fpath = path.join(settings.UPLOAD_DIRECTORY, uuid)
+        fpath = uploadSession.file.path
         with open(fpath, "rb") as f:
             for chunk in iter(lambda: f.read(4096), b""):
                 hash_md5.update(chunk)
 
         hash_md5 = hash_md5.hexdigest()
         success = user_file_md5 == hash_md5
+
+        if success:
+          uploadSession.state = 3
+          uploadSession.save()
+          uploadSession.file.reloadFileType()
 
         return Response({'success': success})

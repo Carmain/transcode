@@ -95,6 +95,12 @@ JWT_AUTH = {
 
 UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
 
+SUPPORTED_FILES = (
+    ("mvk", "Mastroska"),
+    ("png", "PNG Image"),
+    ("tmp", "Temporary"),
+)
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
