@@ -43,9 +43,19 @@
       <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
-    <message v-show="message.content" v-bind:tag="message.tag" v-bind:title="message.header" v-bind:message="message.content"></message>
+    <div class="error-handler">
+      <template v-for="sentence in messages_content">
+        <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+      </template>
+    </div>
   </div>
 </template>
+
+<style scope>
+  .error-handler {
+    margin-top: 50px;
+  }
+</style>
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
@@ -71,11 +81,7 @@ export default {
         password: '',
         password_confirmation: ''
       },
-      message: {
-        tag: 'danger',
-        header: 'Warning',
-        content: ''
-      },
+      messages_content: [],
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
     };
   },
@@ -87,7 +93,7 @@ export default {
           auth.login(this.credentials, '/');
         },
         function (response) {
-          this.message.content = response.data.error_msg;
+          this.messages_content = response.data.error_messages;
         }
       );
     }

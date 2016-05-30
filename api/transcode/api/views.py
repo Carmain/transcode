@@ -19,6 +19,7 @@ from os import path
 @permission_classes((AllowAny, ))
 class Register(APIView):
     def post(self, request):
+
         raw_date = request.data.get('birthdate')
         email = request.data.get('email')
         username = request.data.get('username')
@@ -27,63 +28,51 @@ class Register(APIView):
         password = request.data.get('password')
         password_confirmation = request.data.get('password_confirmation')
 
+        errors = []
+        failure = False
+
         if not first_name:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing first name'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append('Missing first name')
 
         if not last_name:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing last name'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append('Missing last name')
 
         if not username:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing username'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append('Missing username')
         else:
             if User.objects.filter(username=username).exists():
-                return Response({
-                    'success': False,
-                    'error_msg': 'This username is already used'
-                }, status=status.HTTP_400_BAD_REQUEST)
+                failure = True
+                errors.append('This username is already used')
             else:
                 reg_username = re.compile("[a-zA-Z0-9_-]{3,16}")
                 if not reg_username.match(username):
-                    return Response({
-                        'success': False,
-                        'error_msg': 'The username is not a valid'
-                    }, status=status.HTTP_400_BAD_REQUEST)
+                    failure = True
+                    errors.append('The username is not valid')
 
         if not email:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing email'
-            }, status=status.HTTP_400_BAD_REQUEST)
-        else:
-            if User.objects.filter(email=email).exists():
-                return Response({
-                    'success': False,
-                    'error_msg': 'This email is already used'
-                }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append('Missing email')
+        elif User.objects.filter(email=email).exists():
+            failure = True
+            errors.append('Missing email')
 
         if not password:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing password'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append("Missing password")
         elif not password_confirmation:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing password confirmation'
-            }, status=status.HTTP_400_BAD_REQUEST)
+            failure = True
+            errors.append("Missing password confirmation")
         elif password != password_confirmation:
+            failure = True
+            errors.append("Password and password confirmation aren't equals")
+
+        if (failure):
             return Response({
                 'success': False,
-                'error_msg': "Password and password confirmation aren't equals"
+                'error_messages': errors
             }, status=status.HTTP_400_BAD_REQUEST)
 
         user, created = User.objects.get_or_create(
@@ -160,8 +149,8 @@ class UploadEnd(APIView):
         success = user_file_md5 == hash_md5
 
         if success:
-          uploadSession.state = 3
-          uploadSession.save()
-          uploadSession.file.reloadFileType()
+            uploadSession.state = 3
+            uploadSession.save()
+            uploadSession.file.reloadFileType()
 
         return Response({'success': success})

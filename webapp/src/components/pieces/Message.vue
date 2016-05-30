@@ -16,9 +16,3 @@ export default {
   ]
 };
 </script>
-
-<style scope>
-  .alert {
-    margin-top: 50px;
-  }
-</style>
