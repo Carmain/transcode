@@ -12,6 +12,8 @@ from rest_framework.parsers import JSONParser, BaseParser
 from rest_framework.permissions import AllowAny
 from api.serializers import UserSerializer
 from rest_framework import permissions
+from urllib.request import urlopen
+from urllib.parse import urlencode
 from django.conf import settings
 from os import path
 
@@ -68,6 +70,22 @@ class Register(APIView):
         elif password != password_confirmation:
             failure = True
             errors.append("Password and password confirmation aren't equals")
+
+        # ReCaptcha
+        ip_address = request.META.get('REMOTE_ADDR')
+        values = {
+            'secret': '6LcRmiATAAAAAAvhpIIcp-CE4NwGByRoakeGoYrB',
+            'response': 'g-recaptcha-response',
+            'remoteip': ip_address
+        }
+
+        data = urlencode(values)
+        binary_data = data.encode('ascii')
+        result = urlopen('https://www.google.com/recaptcha/api/siteverify', binary_data)
+        content = result.read()
+
+        print(ip_address)
+        print(content)
 
         if (failure):
             return Response({

@@ -40,9 +40,11 @@
         <label class="control-label" for="password-confirm">Confirm password</label>
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
+
       <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
+
     <div class="error-handler">
       <template v-for="sentence in messages_content">
         <message tag="danger" title="Waning" v-bind:message="sentence"></message>
