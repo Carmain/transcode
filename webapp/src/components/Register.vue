@@ -43,7 +43,7 @@
       <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
-    <message v-show="message.content" v-bind:tag="message.tag" v-bind:message="message.content"></message>
+    <message v-show="message.content" v-bind:tag="message.tag" v-bind:title="message.header" v-bind:message="message.content"></message>
   </div>
 </template>
 
@@ -72,8 +72,8 @@ export default {
       },
       message: {
         tag: 'danger',
-        content: '',
-        show: false
+        header: 'Warning',
+        content: ''
       },
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
     };

@@ -3,17 +3,18 @@
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-    {{ message }}
+    <b v-show="title">{{ title }} : </b> {{ message }}
   </div>
 </template>
 
 <script>
 export default {
   props: [
-    'message',
-    'tag'
+    'tag',
+    'title',
+    'message'
   ]
-}
+};
 </script>
 
 <style scope>
