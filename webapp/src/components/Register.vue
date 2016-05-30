@@ -52,6 +52,7 @@ import VueRecaptcha from 'vue-recaptcha';
 import Gravatar from './pieces/Gravatar';
 import Message from './pieces/Message';
 import config from "../config.js";
+import auth from '../auth';
 
 export default {
   components: {
@@ -83,8 +84,7 @@ export default {
       let register_url = config.API_URL + '/register/';
       this.$http.post(register_url, this.credentials).then(
         function (response) {
-          console.log("Success");
-          console.log(response);
+          auth.login(this.credentials, '/');
         },
         function (response) {
           this.message.content = response.data.error_msg;
