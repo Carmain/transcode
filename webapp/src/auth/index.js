@@ -19,6 +19,7 @@ export default {
     }).then((user) => {
       this.user.username = user.username;
       this.user.authenticated = true;
+      this.setVueHeader();
 
       if (redirect) {
         router.go(redirect);
