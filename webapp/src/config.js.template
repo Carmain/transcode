@@ -8,7 +8,6 @@ const UPLOAD_CHUNK_URL = API_URL + "/upload-chunk/";
 const UPLOAD_END_URL   = API_URL + "/upload-end/";
 const TOKEN_EXPIRATION  = 300;
 
-
 const RECAPTCHA_PUBLIC_KEY = "XXXXXXXXXXXXXX_XXXXXXX-XXXXXXXX";
 
 export default {

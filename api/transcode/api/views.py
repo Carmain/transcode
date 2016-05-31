@@ -2,6 +2,7 @@ import hashlib
 import uuid
 import datetime
 import re
+import json
 
 from api.models import User, TranscodeFile, UploadSession
 from rest_framework import viewsets, status
@@ -29,6 +30,7 @@ class Register(APIView):
         last_name = request.data.get('last_name')
         password = request.data.get('password')
         password_confirmation = request.data.get('password_confirmation')
+        recaptcha_verify = request.data.get('recaptcha_verify')
 
         errors = []
         failure = False
@@ -74,18 +76,23 @@ class Register(APIView):
         # ReCaptcha
         ip_address = request.META.get('REMOTE_ADDR')
         values = {
-            'secret': '6LcRmiATAAAAAAvhpIIcp-CE4NwGByRoakeGoYrB',
-            'response': 'g-recaptcha-response',
-            'remoteip': ip_address
+            "secret": settings.RECAPTCHA_PRIVATE_KEY,
+            "response": recaptcha_verify,
+            "remoteip": ip_address
         }
 
         data = urlencode(values)
         binary_data = data.encode('ascii')
         result = urlopen('https://www.google.com/recaptcha/api/siteverify', binary_data)
-        content = result.read()
+        result_tostring = result.read().decode('utf-8')
+        json_result = json.loads(result_tostring)
 
-        print(ip_address)
-        print(content)
+        if not recaptcha_verify:
+            failure = True
+            errors.append('You need to valid the ReCaptcha')
+        elif not json_result['success']:
+            failure = True
+            errors.append('Are you a robot ?')
 
         if (failure):
             return Response({

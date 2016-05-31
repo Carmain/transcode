@@ -41,7 +41,7 @@
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
 
-      <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
+      <vue-recaptcha v-bind:key="recaptcha_pub_key" @verify="onVerify"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
 
@@ -81,7 +81,8 @@ export default {
         last_name: '',
         birthdate: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        recaptcha_verify: ''
       },
       messages_content: [],
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
@@ -98,6 +99,9 @@ export default {
           this.messages_content = response.data.error_messages;
         }
       );
+    },
+    onVerify: function(response) {
+      this.credentials.recaptcha_verify = response;
     }
   }
 };
