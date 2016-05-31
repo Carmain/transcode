@@ -58,7 +58,11 @@ docs/_build/
 # PyBuilder
 target/
 
-#Ipython Notebook
+# Ipython Notebook
 .ipynb_checkpoints
 
+# Database
 db.sqlite3
+
+# Configuration file
+transcode/transcode/settings.py
