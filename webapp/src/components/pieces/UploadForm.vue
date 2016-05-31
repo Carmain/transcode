@@ -1,7 +1,7 @@
 <template>
   <div class="uploadForm">
     <input type="file" @change="loadFile($event.target.files)">
-    <button type="button">Submit</button>
+    <button type="button" @click="uploadStart()">Submit</button>
   </div>
 
 </template>
