@@ -132,13 +132,15 @@ class UploadStart(APIView):
 
         return Response({
             'success': True,
-            'uuid': uploadSession.uuid
+            'uuid': uploadSession.uuid,
+            'chunkSize': settings.UPLOAD_CHUNK_SIZE
         })
 
 
 class UploadChunk(APIView):
     parser_classes = (BinaryParser,)
 
+    #TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
     def post(self, request, uuid):
         uploadSession = UploadSession.objects.get(uuid=uuid)
         userFile = open(uploadSession.file.path, "ab")

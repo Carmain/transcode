@@ -94,6 +94,7 @@ JWT_AUTH = {
 }
 
 UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
+UPLOAD_CHUNK_SIZE = 1024
 
 SUPPORTED_FILES = (
     ("mvk", "Matroska"),
