@@ -1,5 +1,6 @@
 const API_URL = "//transcode_wololo.wololo.fr";
 const LOGIN_URL = API_URL + "/auth/";
+const REGISTER_URL = API_URL + "/register/";
 const PROFILE_URL = API_URL + "/me/";
 const REFRESH_URL = API_URL + "/refresh-jwt/";
 const UPLOAD_START_URL = API_URL + "/upload-start/";
@@ -13,6 +14,7 @@ const RECAPTCHA_PUBLIC_KEY = "XXXXXXXXXXXXXX_XXXXXXX-XXXXXXXX";
 export default {
   API_URL,
   LOGIN_URL,
+  REGISTER_URL,
   PROFILE_URL,
   REFRESH_URL,
   TOKEN_EXPIRATION,

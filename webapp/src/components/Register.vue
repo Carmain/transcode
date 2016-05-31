@@ -89,7 +89,7 @@ export default {
   },
   methods: {
     register: function() {
-      let register_url = config.API_URL + '/register/';
+      let register_url = config.REGISTER_URL;
       this.$http.post(register_url, this.credentials).then(
         function (response) {
           auth.login(this.credentials, '/');
