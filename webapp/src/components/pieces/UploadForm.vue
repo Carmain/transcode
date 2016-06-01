@@ -1,9 +1,6 @@
 <template>
-  <div class="uploadForm">
-    <input type="file" @change="loadFile($event.target.files)">
-    <button type="button" @click="uploadStart()">Submit</button>
-  </div>
-
+  <input type="file" @change="loadFile($event.target.files)">
+  <button type="button" @click="uploadStart()">Submit</button>
 </template>
 
 <script>
@@ -23,7 +20,7 @@ export default {
   },
   methods: {
     uploadStart: function () {
-      Vue.http.get(config.UPLOAD_START_URL).then((res) => {
+      this.$http.get(config.UPLOAD_START_URL).then((res) => {
         if (res.success) {
           uploadSessionID = res.uuid;
           chunkSize = res.chunkSize;
@@ -37,11 +34,15 @@ export default {
       let remainingBytes = this.totalBytes - this.sentBytes;
       let buffer = this.file.slice(this.sentBytes, Math.min(remainingBytes, chunkSize));
 
-      Vue.http.post(
-                    `${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`,
-                    buffer,
-                    { headers: { "Content-Type": "application/octet-stream" } }
-                   )
+      this.$ttp.post(
+        `${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`,
+        buffer,
+        {
+          headers: {
+            "Content-Type": "application/octet-stream"
+          }
+        }
+      )
       .then((res) => {
         if (!res.success) {
           // Something went wrong
@@ -57,16 +58,17 @@ export default {
         this.sentBytes +=  buffer.length;
         this.progress();
 
-        if (res.remains == 0) {
+        if (res.remains === 0) {
           this.uploadEnd();
         } else {
           this.uploadNextChunk();
         }
+      });
     },
     uploadEnd: function () {
       let hash = md5Buffer.end();
 
-      Vue.http.post(`${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
+      this.$ttp.post(`${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
         if (res.success) {
           this.$dispatch("end");
         }
@@ -74,7 +76,7 @@ export default {
     },
     progress: function () {
       let percentage = Math.round((this.totalBytes / this.sentBytes) * 100);
-      this.$dispatch("progress", percentage)
+      this.$dispatch("progress", percentage);
     },
     loadFile: function (file) {
       file = file[0];
@@ -83,5 +85,5 @@ export default {
       this.totalBytes = this.file.size;
     }
   }
-}
+};
 </script>
