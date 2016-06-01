@@ -2,6 +2,7 @@ import hashlib
 import uuid
 import datetime
 import re
+import json
 
 from api.models import User, TranscodeFile, UploadSession
 from rest_framework import viewsets, status
@@ -12,6 +13,8 @@ from rest_framework.parsers import JSONParser, BaseParser
 from rest_framework.permissions import AllowAny
 from api.serializers import UserSerializer
 from rest_framework import permissions
+from urllib.request import urlopen
+from urllib.parse import urlencode
 from django.conf import settings
 from os import path
 
@@ -19,6 +22,7 @@ from os import path
 @permission_classes((AllowAny, ))
 class Register(APIView):
     def post(self, request):
+
         raw_date = request.data.get('birthdate')
         email = request.data.get('email')
         username = request.data.get('username')
@@ -26,65 +30,75 @@ class Register(APIView):
         last_name = request.data.get('last_name')
         password = request.data.get('password')
         password_confirmation = request.data.get('password_confirmation')
+        recaptcha_verify = request.data.get('recaptcha_verify')
+
+        errors = []
+        failure = False
 
         if not first_name:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing first name'
-            })
+            failure = True
+            errors.append('Missing first name')
 
         if not last_name:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing last name'
-            })
+            failure = True
+            errors.append('Missing last name')
 
         if not username:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing username'
-            })
+            failure = True
+            errors.append('Missing username')
         else:
             if User.objects.filter(username=username).exists():
-                return Response({
-                    'success': False,
-                    'error_msg': 'This username is already used'
-                })
+                failure = True
+                errors.append('This username is already used')
             else:
                 reg_username = re.compile("[a-zA-Z0-9_-]{3,16}")
                 if not reg_username.match(username):
-                    return Response({
-                        'success': False,
-                        'error_msg': 'The username is not a valid'
-                    })
+                    failure = True
+                    errors.append('The username is not valid')
 
         if not email:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing email'
-            })
-        else:
-            if User.objects.filter(email=email).exists():
-                return Response({
-                    'success': False,
-                    'error_msg': 'This email is already used'
-                })
+            failure = True
+            errors.append('Missing email')
+        elif User.objects.filter(email=email).exists():
+            failure = True
+            errors.append('Missing email')
 
         if not password:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing password'
-            })
+            failure = True
+            errors.append("Missing password")
         elif not password_confirmation:
-            return Response({
-                'success': False,
-                'error_msg': 'Missing password confirmation'
-            })
+            failure = True
+            errors.append("Missing password confirmation")
         elif password != password_confirmation:
+            failure = True
+            errors.append("Password and password confirmation aren't equals")
+
+        # ReCaptcha
+        ip_address = request.META.get('REMOTE_ADDR')
+        values = {
+            "secret": settings.RECAPTCHA_PRIVATE_KEY,
+            "response": recaptcha_verify,
+            "remoteip": ip_address
+        }
+
+        data = urlencode(values)
+        binary_data = data.encode('ascii')
+        result = urlopen('https://www.google.com/recaptcha/api/siteverify', binary_data)
+        result_tostring = result.read().decode('utf-8')
+        json_result = json.loads(result_tostring)
+
+        if not recaptcha_verify:
+            failure = True
+            errors.append('You need to valid the ReCaptcha')
+        elif not json_result['success']:
+            failure = True
+            errors.append('Are you a robot ?')
+
+        if (failure):
             return Response({
                 'success': False,
-                'error_msg': "Password and password confirmation aren't equals"
-            })
+                'error_messages': errors
+            }, status=status.HTTP_400_BAD_REQUEST)
 
         user, created = User.objects.get_or_create(
             email=request.data.get('email'),
@@ -125,13 +139,15 @@ class UploadStart(APIView):
 
         return Response({
             'success': True,
-            'uuid': uploadSession.uuid
+            'uuid': uploadSession.uuid,
+            'chunkSize': settings.UPLOAD_CHUNK_SIZE
         })
 
 
 class UploadChunk(APIView):
     parser_classes = (BinaryParser,)
 
+    #TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
     def post(self, request, uuid):
         uploadSession = UploadSession.objects.get(uuid=uuid)
         userFile = open(uploadSession.file.path, "ab")
@@ -160,8 +176,8 @@ class UploadEnd(APIView):
         success = user_file_md5 == hash_md5
 
         if success:
-          uploadSession.state = 3
-          uploadSession.save()
-          uploadSession.file.reloadFileType()
+            uploadSession.state = 3
+            uploadSession.save()
+            uploadSession.file.reloadFileType()
 
         return Response({'success': success})

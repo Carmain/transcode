@@ -40,22 +40,31 @@
         <label class="control-label" for="password-confirm">Confirm password</label>
         <input class="form-control" id="password-confirm" type="password" v-model="credentials.password_confirmation">
       </div>
-      <vue-recaptcha v-bind:key="recaptcha_pub_key"></vue-recaptcha>
+
+      <vue-recaptcha v-bind:key="recaptcha_pub_key" @verify="onVerify"></vue-recaptcha>
       <button type="button" class="btn btn-primary pull-right" @click="register()">Submit</button>
     </form>
-    <template v-for="message in messages">
-      <message tag="danger" message="This is a test"></message>
-    </template>
+
+    <div class="error-handler">
+      <template v-for="sentence in messages_content">
+        <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+      </template>
+    </div>
   </div>
 </template>
+
+<style scoped>
+  .error-handler {
+    margin-top: 50px;
+  }
+</style>
 
 <script>
 import VueRecaptcha from 'vue-recaptcha';
 import Gravatar from './pieces/Gravatar';
 import Message from './pieces/Message';
 import config from "../config.js";
-
-console.log(config.RECAPTCHA_PUBLIC_KEY);
+import auth from '../auth';
 
 export default {
   components: {
@@ -72,27 +81,27 @@ export default {
         last_name: '',
         birthdate: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        recaptcha_verify: ''
       },
-      messages: [],
+      messages_content: [],
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
-    }
+    };
   },
   methods: {
     register: function() {
-
-
-      let register_url = config.API_URL + '/register/'
+      let register_url = config.REGISTER_URL;
       this.$http.post(register_url, this.credentials).then(
         function (response) {
-          console.log("Success");
-          console.log(response);
+          auth.login(this.credentials, '/');
         },
         function (response) {
-          console.log("Error");
-          console.log(response);
+          this.messages_content = response.data.error_messages;
         }
       );
+    },
+    onVerify: function(response) {
+      this.credentials.recaptcha_verify = response;
     }
   }
 };

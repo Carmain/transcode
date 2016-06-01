@@ -1,16 +1,36 @@
 <template>
   <div class ="container">
     <h1>Convert</h1>
-    <form enctype="multipart/form-data" @submit="sendFile()">
-      <div class="form-group">
-        <label class="control-label" for="upload">Upload your file here</label>
-        <input type="file" id="upload">
+    <form enctype="multipart/form-data">
+
+      <div class="row">
+        <div class="form-group col-md-6 col-sm-6">
+          <label class="control-label" for="url">Provide us an URL</label>
+          <input class="form-control" id="url" type="text">
+        </div>
+        <div class="form-group col-md-6 col-sm-6">
+          <label class="control-label" for="upload">Or upload your file here</label>
+          <input type="file" id="upload">
+        </div>
       </div>
 
       <div class="form-group">
-        <label class="control-label" for="url">Or provide us an URL</label>
-        <input class="form-control" id="url" type="text">
+        <label class="control-label" for="convert-type">I want my file converted into</label>
+        <select class="form-control" id="convert-type">
+          <optgroup label="Audio">
+            <template v-for="extension in audio">
+              <option v-bind:value="extension">{{ extension }}</option>
+            </template>
+          </optgroup>
+          <optgroup label="Video">
+            <template v-for="extension in video">
+              <option v-bind:value="extension">{{ extension }}</option>
+            </template>
+          </optgroup>
+        </select>
       </div>
+
+      <button type="button" class="btn btn-primary pull-right" @click="uploadFile()">Submit</button>
     </form>
 
     <div class="row margin-top">
@@ -25,9 +45,9 @@
 </template>
 
 <script>
-import ConvertGuest from './pieces/Convert_guest'
-import ConvertLogged from './pieces/Convert_logged'
-import auth from '../auth'
+import ConvertGuest from './pieces/Convert_guest';
+import ConvertLogged from './pieces/Convert_logged';
+import auth from '../auth';
 
 export default {
   components: {
@@ -36,15 +56,17 @@ export default {
   },
   data () {
     return {
-      user: auth.user
-    }
+      user: auth.user,
+      audio: ['MP3', 'MPEG4', 'WAV'],
+      video: ['VID', 'YOLO', 'HUHU']
+    };
   },
   methods: {
-    sendFile: function() {
-      
+    uploadFile: function() {
+
     }
   }
-}
+};
 </script>
 
 <style>

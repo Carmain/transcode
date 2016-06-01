@@ -10,11 +10,6 @@
         <label class="control-label" for="password">Password</label>
         <input class="form-control" id="password" type="password" v-model="credentials.password">
       </div>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox"> Remember me
-        </label>
-      </div>
       <button type="button" class="btn btn-primary pull-right" @click="submit()">Submit</button>
     </form>
   </div>
