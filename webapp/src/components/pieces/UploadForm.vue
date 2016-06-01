@@ -1,6 +1,42 @@
 <template>
-  <input type="file" @change="loadFile($event.target.files)">
-  <button type="button" @click="uploadStart()">Submit</button>
+  <form>
+    <div class="radio-inline">
+      <label><input type="radio" name="upload" value="file" checked="checked" v-model="uploadType">Upload a file</label>
+    </div>
+    <div class="radio-inline">
+      <label><input type="radio" name="upload" value="url" v-model="uploadType">Provide an URL</label>
+    </div>
+
+    <div class="form-group" v-if="uploadType === 'file'">
+      <label class="control-label" for="upload">Upload your file here</label>
+      <input type="file" @change="loadFile($event.target.files)">
+    </div>
+    <div class="form-group" v-if="uploadType === 'url'">
+      <label class="control-label" for="url">Or provide us an URL</label>
+      <input class="form-control" id="url" type="text" v-model="url">
+    </div>
+    <hr />
+
+    <div class="form-group">
+      <label class="control-label" for="convert-type">I want my file converted into</label>
+      <select class="form-control" id="convert-type">
+        <optgroup label="Audio">
+          <template v-for="extension in format.audio">
+            <option v-bind:value="extension">{{ extension }}</option>
+          </template>
+        </optgroup>
+        <optgroup label="Video">
+          <template v-for="extension in format.video">
+            <option v-bind:value="extension">{{ extension }}</option>
+          </template>
+        </optgroup>
+      </select>
+    </div>
+
+    <button type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
+  </form>
+  <!-- <input type="file" @change="loadFile($event.target.files)">
+  <button type="button" @click="uploadStart()">Submit</button> -->
 </template>
 
 <script>
@@ -13,7 +49,13 @@ let chunkSize;
 export default {
   data() {
     return {
-      file: "",
+      file: '',
+      url: '',
+      uploadType: '',
+      format: {
+        audio: ['MP3', 'MPEG4', 'WAV'],
+        video: ['VID', 'YOLO', 'HUHU']
+      },
       sentBytes: 0,
       totalBytes: 0
     };
