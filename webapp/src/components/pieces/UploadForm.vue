@@ -61,67 +61,80 @@ export default {
   },
   methods: {
     uploadStart: function () {
-      this.$http.get(config.UPLOAD_START_URL).then((res) => {
-        if (res.success) {
-          uploadSessionID = res.uuid;
-          chunkSize = res.chunkSize;
+      this.$http.post(config.UPLOAD_START_URL, {fileSize: this.file.size}).then((res) => {
+        if (res.data.success) {
+          uploadSessionID = res.data.uuid;
+          chunkSize = res.data.chunkSize;
         }
 
+        // Trigger a "start" event. I'm surprized !
         this.$dispatch("start");
         this.uploadNextChunk();
       });
     },
+
     uploadNextChunk: function () {
       let remainingBytes = this.totalBytes - this.sentBytes;
-      let buffer = this.file.slice(this.sentBytes, Math.min(remainingBytes, chunkSize));
+      let bufferSize = Math.min(remainingBytes, chunkSize, this.file.size);
+      let buffer = this.file.slice(this.sentBytes, this.sentBytes + bufferSize);
+      console.log(buffer);
+      let reader = new FileReader();
 
-      this.$ttp.post(
-        `${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`,
-        buffer,
-        {
-          headers: {
-            "Content-Type": "application/octet-stream"
+      reader.addEventListener("loadend", () => {
+        let fileArray = reader.result;
+        this.$http.post(
+          `${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`, fileArray,
+          {
+            headers: {
+              "Content-Type": "application/octet-stream"
+            }
           }
-        }
-      )
-      .then((res) => {
-        if (!res.success) {
-          // Something went wrong
-          return;
-        }
+        ).then((res) => {
+          if (!res.data.success) {
+            // Something went wrong
+            this.$dispatch("errorUpload");
+            return;
+          }
 
-        if (res.remains != (remainingBytes -  chunkSize)) {
-          // Bytes sent & bytes received are not equals
-          return;
-        }
+          if (res.data.remains != (remainingBytes -  fileArray.byteLength)) {
+            // Bytes sent & bytes received are not equals
+            this.$dispatch("bytesNotEquals");
+            return;
+          }
 
-        md5Buffer.append(buffer);
-        this.sentBytes +=  buffer.length;
-        this.progress();
+          md5Buffer.append(fileArray);
+          this.sentBytes +=  fileArray.byteLength;
+          this.progress();
 
-        if (res.remains === 0) {
-          this.uploadEnd();
-        } else {
-          this.uploadNextChunk();
-        }
+          if (res.data.remains === 0) {
+            this.uploadEnd();
+          } else {
+            this.uploadNextChunk();
+          }
+        });
       });
+
+      reader.readAsArrayBuffer(buffer);
     },
+
     uploadEnd: function () {
       let hash = md5Buffer.end();
-
-      this.$ttp.post(`${config.UPLOAD_CHUNK_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
-        if (res.success) {
+      console.log(hash);
+      this.$http.post(`${config.UPLOAD_END_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
+        if (res.data.success) {
           this.$dispatch("end");
         }
       });
     },
+
     progress: function () {
       let percentage = Math.round((this.totalBytes / this.sentBytes) * 100);
       this.$dispatch("progress", percentage);
     },
+
     loadFile: function (file) {
       file = file[0];
-
+      console.log(file);
       this.file = file;
       this.totalBytes = this.file.size;
     }
