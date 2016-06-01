@@ -1,9 +1,13 @@
 import uuid
 import magic
-from os import path
+import os
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+
+TYPES_TABLE = {
+    "audio/mpeg": "mp3"
+}
 
 def generate_uuid4():
     return uuid.uuid4().hex
@@ -18,18 +22,21 @@ class TranscodeFile(models.Model):
     owner = models.ForeignKey("User", default=None, null=True, blank=True)
     uuid = models.CharField(default=generate_uuid4, max_length=32)
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, default="tmp", max_length=3)
-    size = models.IntegerField(default=9999999) # TODO Get realSize from client
+    size = models.IntegerField()
 
     @property
     def path(self):
-      return path.join(settings.UPLOAD_DIRECTORY, self.fileName)
+      return os.path.join(settings.UPLOAD_DIRECTORY, self.fileName)
 
     @property
     def fileName(self):
       return "{0}.{1}".format(self.uuid, self.fileType)
 
     def guessFileType(self):
-      mimeType = magic.from_file(self.path, mime=True)
+      print(self.path)
+      mimeType = magic.from_file(self.path, mime=True).decode("utf-8")
+      if mimeType in TYPES_TABLE:
+          return TYPES_TABLE.get(mimeType)
       return mimeType.split("/")[1]
 
     def reloadFileType(self):
