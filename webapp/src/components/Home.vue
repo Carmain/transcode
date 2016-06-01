@@ -10,19 +10,19 @@
 </template>
 
 <script>
-import Welcome from './pieces/Home_Guest'
-import Homepage from './pieces/Home_logged'
-import auth from '../auth'
+import Welcome from './pieces/HomeGuest';
+import Homepage from './pieces/HomeLogged';
+import auth from '../auth';
 
 export default {
   data () {
     return {
       user: auth.user
-    }
+    };
   },
   components: {
     Welcome,
     Homepage
   }
-}
+};
 </script>

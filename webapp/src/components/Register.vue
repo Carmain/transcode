@@ -53,7 +53,7 @@
   </div>
 </template>
 
-<style scope>
+<style scoped>
   .error-handler {
     margin-top: 50px;
   }

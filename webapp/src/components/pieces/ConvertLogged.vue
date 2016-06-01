@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import Chart from 'chart.js'
+import Chart from 'chart.js';
 
 export default {
   data () {
@@ -59,17 +59,17 @@ export default {
           type: 'video'
         }
       ]
-    }
+    };
   },
   ready () {
-    this.displayChart()
+    this.displayChart();
   },
   methods: {
     isFileMusic: function (file) {
-      return file.type !== 'video'
+      return file.type !== 'video';
     },
     displayChart: function () {
-      var ctx = document.getElementById('pieChart').getContext('2d')
+      var ctx = document.getElementById('pieChart').getContext('2d');
       var myChart = new Chart(ctx, { // eslint-disable-line
         type: 'pie',
         data: {
@@ -83,12 +83,8 @@ export default {
             data: this.memory
           }]
         }
-      })
+      });
     }
   }
-}
+};
 </script>
-
-<style scoped>
-
-</style>

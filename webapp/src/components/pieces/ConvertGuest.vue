@@ -15,11 +15,7 @@ export default {
     return {
       converted_files: 654654,
       registered_users: 89764,
-    }
+    };
   }
-}
+};
 </script>
-
-<style scoped>
-
-</style>
