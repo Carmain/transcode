@@ -35,12 +35,11 @@
 
     <button type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
   </form>
-  <!-- <input type="file" @change="loadFile($event.target.files)">
-  <button type="button" @click="uploadStart()">Submit</button> -->
 </template>
 
 <script>
 import config from "../../config.js";
+import SparkMD5 from 'spark-md5';
 
 let md5Buffer = new SparkMD5.ArrayBuffer();
 let uploadSessionID;
