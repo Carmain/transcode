@@ -77,7 +77,7 @@ export default {
       return;
     }
     this.user.authenticated = true;
-
+    this.setVueHeader();
     this.refreshTokenJob().then(() => {
       return this.loadUserInformations();
     }).then((res) => {
