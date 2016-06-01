@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-6">
     <h2>Your stockage</h2>
-    <canvas id="pieChart" width="400" height="350"></canvas>
+    <memory width="400" height="350" v-bind:memory="stockage"></memory>
   </div>
   <div class="col-sm-6">
     <h2>Your last converted files</h2>
@@ -26,12 +26,15 @@
 </template>
 
 <script>
-import Chart from 'chart.js';
+import Memory from './Memory';
 
 export default {
+  components: {
+    Memory
+  },
   data () {
     return {
-      memory: [1654, 16819],
+      stockage: [1654, 16819],
       last_files: [
         {
           name: 'yolo.mp3',
@@ -67,23 +70,6 @@ export default {
   methods: {
     isFileMusic: function (file) {
       return file.type !== 'video';
-    },
-    displayChart: function () {
-      var ctx = document.getElementById('pieChart').getContext('2d');
-      var myChart = new Chart(ctx, { // eslint-disable-line
-        type: 'pie',
-        data: {
-          labels: ['Used', 'Free'],
-          datasets: [{
-            backgroundColor: [
-              '#36A2EB',
-              '#FFCE56'
-            ],
-            label: 'Used memory',
-            data: this.memory
-          }]
-        }
-      });
     }
   }
 };
