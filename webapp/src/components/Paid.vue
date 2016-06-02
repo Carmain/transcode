@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>Proceed to paiement</h1>
+    <h1>Proceed to payment</h1>
     <div id="paypal-container"></div>
   </div>
 </template>
@@ -43,7 +43,11 @@ export default {
   },
   route: {
     canActivate() {
-      return auth.user.authenticated;
+      if (sessionStorage.getItem("fileUUID") && auth.user.authenticated) {
+        return true;
+      }
+
+      return false;
     }
   }
 };

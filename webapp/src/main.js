@@ -42,8 +42,8 @@ router.map({
     name: 'update',
     component: Update
   },
-  '/paiement': {
-    name: 'paiement',
+  '/payment': {
+    name: 'payment',
     component: Paid
   },
   '/404': {
