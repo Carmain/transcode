@@ -117,12 +117,6 @@ class Register(APIView):
                 status=status.HTTP_201_CREATED
             )
 
-class CheckPendingFiles(APIView):
-  def get(self, request):
-    if request.session.pending_file:
-      pending_file = request.session.pending_file
-      return Response({'success': True, 'file_uuid': pending_file.uuid})
-    return Response({'success': False})
 
 class BinaryParser(BaseParser):
     media_type = 'application/octet-stream'
@@ -130,7 +124,7 @@ class BinaryParser(BaseParser):
     def parse(self, stream, media_type=None, parser_context=None):
         return stream.read()
 
-@permission_classes((AllowAny, ))
+
 class CurrentUserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
@@ -185,16 +179,14 @@ class UploadEnd(APIView):
 
         hash_md5 = hash_md5.hexdigest()
         success = user_file_md5 == hash_md5
+        uploaded_file = uploadSession.file
 
         if success:
             uploadSession.state = 3
             uploadSession.save()
-            uploadSession.file.reloadFileType()
+            uploaded_file.reloadFileType()
 
-            if not request.user:
-                request.session.pending_file = UploadSession.file
-
-        return Response({'success': success})
+        return Response({'success': success, 'file_uuid': uploaded_file.uuid})
 
 @permission_classes((IsAuthenticated, ))
 class getPaypalToken(APIView):
