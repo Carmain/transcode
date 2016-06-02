@@ -219,20 +219,9 @@ class checkout(APIView):
         result = gateway.transaction.sale({
             "amount" : 1,
             "payment_method_nonce" : payment_method_nonce,
-            "order_id" : "Mapped to PayPal Invoice Number",
+            "order_id" : 1,
             "descriptor": {
-              "name": "Descriptor displayed in customer CC statements. 22 char max"
-            },
-            "shipping": {
-              "first_name": "Jen",
-              "last_name": "Smith",
-              "company": "Braintree",
-              "street_address": "1 E 1st St",
-              "extended_address": "Suite 403",
-              "locality": "Bartlett",
-              "region": "IL",
-              "postal_code": "60103",
-              "country_code_alpha2": "US"
+              "name": "transcode*conversion"
             },
             "options" : {
               "paypal" : {
