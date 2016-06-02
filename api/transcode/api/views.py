@@ -11,7 +11,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, BaseParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from api.serializers import UserSerializer
 from rest_framework import permissions
 from urllib.request import urlopen
@@ -117,6 +117,12 @@ class Register(APIView):
                 status=status.HTTP_201_CREATED
             )
 
+class CheckPendingFiles(APIView):
+  def get(self, request):
+    if request.session.pending_file:
+      pending_file = request.session.pending_file
+      return Response({'success': True, 'file_uuid': pending_file.uuid})
+    return Response({'success': False})
 
 class BinaryParser(BaseParser):
     media_type = 'application/octet-stream'
@@ -185,8 +191,12 @@ class UploadEnd(APIView):
             uploadSession.save()
             uploadSession.file.reloadFileType()
 
+            if not request.user:
+                request.session.pending_file = UploadSession.file
+
         return Response({'success': success})
 
+@permission_classes((IsAuthenticated, ))
 class getPaypalToken(APIView):
     parser_classes = (JSONParser, )
 
@@ -196,3 +206,50 @@ class getPaypalToken(APIView):
 
         return Response({'success': True, 'token': token})
 
+
+@permission_classes((IsAuthenticated, ))
+class launch_conversion(APIView):
+    parser_classes = (JSONParser, )
+
+    def post(self, request):
+        file_to_convert = TranscodeFile(request.data.get("file"))
+
+        return Response({'success': True})
+
+
+@permission_classes((IsAuthenticated, ))
+class checkout(APIView):
+    parser_classes = (JSONParser, )
+
+    def post(self, request):
+        gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+        payment_method_nonce = request.data.get("payment_method_nonce")
+        result = gateway.transaction.sale({
+            "amount" : 1,
+            "payment_method_nonce" : payment_method_nonce,
+            "order_id" : "Mapped to PayPal Invoice Number",
+            "descriptor": {
+              "name": "Descriptor displayed in customer CC statements. 22 char max"
+            },
+            "shipping": {
+              "first_name": "Jen",
+              "last_name": "Smith",
+              "company": "Braintree",
+              "street_address": "1 E 1st St",
+              "extended_address": "Suite 403",
+              "locality": "Bartlett",
+              "region": "IL",
+              "postal_code": "60103",
+              "country_code_alpha2": "US"
+            },
+            "options" : {
+              "paypal" : {
+                "custom_field" : "PayPal custom field",
+                "description" : "Description for PayPal email receipt"
+              },
+            }
+        })
+        if result.is_success:
+            return Response({'success': True, 'transaction': result.transaction.id})
+        else:
+            return Response({'success': False, 'message': result.message})

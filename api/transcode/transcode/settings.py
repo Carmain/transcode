@@ -26,8 +26,6 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
-# PRIVATE KEY FOR RECAPTCHA
-RECAPTCHA_PRIVATE_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 # Application definition
 
@@ -85,20 +83,14 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
         'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 }
 
 JWT_AUTH = {
-  'JWT_ALLOW_REFRESH': True
+  'JWT_ALLOW_REFRESH': True,
+  'JWT_AUTH_HEADER_PREFIX': 'JWT'
 }
-
-UPLOAD_DIRECTORY = "/home/wololo/transcode_upload/"
-UPLOAD_CHUNK_SIZE = 1000000 # In octet
-
-PAYPAL_ACCESS_TOKEN = "xxxxxxxx$xxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxx"
 
 SUPPORTED_FILES = (
     ("mvk", "Matroska"),
@@ -110,3 +102,8 @@ SUPPORTED_FILES = (
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
+
+try:
+    from transcode.local_settings import *
+except ImportError:
+    raise ImportError("Check that you have correctly renamed local_settings.py.template file.")
