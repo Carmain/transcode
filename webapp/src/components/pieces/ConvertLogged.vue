@@ -64,9 +64,6 @@ export default {
       ]
     };
   },
-  ready () {
-    this.displayChart();
-  },
   methods: {
     isFileMusic: function (file) {
       return file.type !== 'video';
