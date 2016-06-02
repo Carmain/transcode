@@ -120,6 +120,7 @@ export default {
       let hash = md5Buffer.end();
       this.$http.post(`${config.UPLOAD_END_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
         if (res.data.success) {
+          sessionStorage.setItem("fileUUID", res.data.file_uuid);
           this.$dispatch("end");
         }
       });
