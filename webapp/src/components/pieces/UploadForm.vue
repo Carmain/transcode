@@ -126,7 +126,7 @@ export default {
     },
 
     progress: function () {
-      let percentage = Math.round((this.totalBytes / this.sentBytes) * 100);
+      let percentage = Math.round((this.sentBytes / this.totalBytes) * 100);
       this.$dispatch("progress", percentage);
     },
 
