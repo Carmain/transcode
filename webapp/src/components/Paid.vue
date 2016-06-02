@@ -8,6 +8,7 @@
 <script>
 import braintree from 'braintree-web';
 import config from "../config.js";
+import auth from '../auth';
 
 export default {
   data () {
@@ -40,6 +41,11 @@ export default {
       });
     });
   },
+  route: {
+    canActivate() {
+      return auth.user.authenticated;
+    }
+  }
 };
 </script>
 
