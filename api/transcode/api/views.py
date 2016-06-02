@@ -192,6 +192,7 @@ class getPaypalToken(APIView):
 
     def get(self, request):
         gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+        token = gateway.client_token.generate()
 
-        return Response({'success': True})
+        return Response({'success': True, 'token': token})
 
