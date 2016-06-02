@@ -9,6 +9,7 @@ import Connect from './components/Connect';
 import Register from './components/Register';
 import Convert from './components/Convert';
 import Update from './components/Update';
+import Paid from './components/Paid';
 import NotFound from './components/NotFound';
 
 Vue.use(VueRouter);
@@ -40,6 +41,10 @@ router.map({
   '/update-my-profile': {
     name: 'update',
     component: Update
+  },
+  '/paiement': {
+    name: 'paiement',
+    component: Paid
   },
   '/404': {
     name: '404',

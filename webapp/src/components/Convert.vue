@@ -23,7 +23,14 @@
       </template>
 
       <template v-if="uploadEnded">
-        <h2>The upload ended</h2>
+        <template v-if="!user.authenticated">
+          <h2>Upload succeed !</h2>
+          <p>
+            The file was uploaded successfully. If you want to convert it, you need to log in.
+          </p>
+          <a v-link="'connect'" class="btn btn-default" role="button">Login</a>
+          <a v-link="'register'" class="btn btn-primary" role="button">Register</a>
+        </template>
       </template>
     </div>
     <template v-for="sentence in messages_content">
@@ -74,6 +81,9 @@ export default {
     },
     uploadEnd: function() {
       this.uploadEnded = true;
+      if(this.user.authenticated) {
+        this.$route.router.go('paiement');
+      }
     }
   }
 };
