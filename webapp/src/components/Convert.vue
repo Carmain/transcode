@@ -3,11 +3,24 @@
     <h1>Convert</h1>
     <upload-form></upload-form>
     <div class="row margin-top">
-      <template v-if="user.authenticated">
-        <convert-logged></convert-logged>
+
+      <template v-if="uploadStarted">
+        <h3>The upload started</h3>
+        <div class="progress">
+          <!-- TODO: style="width:{{progress}}%" doesn't work with internet explorer -->
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{progress}}%">
+            {{progress}}%
+          </div>
+        </div>
       </template>
+
       <template v-else>
-        <convert-guest></convert-guest>
+        <template v-if="user.authenticated">
+          <convert-logged></convert-logged>
+        </template>
+        <template v-else>
+          <convert-guest></convert-guest>
+        </template>
       </template>
     </div>
   </div>
@@ -28,10 +41,28 @@ export default {
   data () {
     return {
       user: auth.user,
+      uploadStarted: false,
+      progress: 0
     };
   },
+  events: {
+    'start': 'uploadStarted',
+    'errorUpload': 'displayError',
+    'bytesNotEquals': 'displayError',
+    'progress': 'getProgression',
+    'end': 'uploadEnd'
+  },
   methods: {
-    uploadFile: function() {
+    uploadStarted: function() {
+      this.uploadStarted = true;
+    },
+    displayError: function() {
+
+    },
+    getProgression: function(percentage) {
+      this.progress = percentage;
+    },
+    uploadEnd: function() {
 
     }
   }
