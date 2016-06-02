@@ -98,6 +98,8 @@ JWT_AUTH = {
 UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
 UPLOAD_CHUNK_SIZE = 1024
 
+PAYPAL_ACCESS_TOKEN = "xxxxxxxx$xxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxx"
+
 SUPPORTED_FILES = (
     ("mvk", "Matroska"),
     ("png", "PNG Image"),

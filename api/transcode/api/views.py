@@ -3,6 +3,7 @@ import uuid
 import datetime
 import re
 import json
+import braintree
 
 from api.models import User, TranscodeFile, UploadSession
 from rest_framework import viewsets, status
@@ -181,3 +182,12 @@ class UploadEnd(APIView):
             uploadSession.file.reloadFileType()
 
         return Response({'success': success})
+
+class getPaypalToken(APIView):
+    parser_classes = (JSONParser, )
+
+    def get(self, request):
+        gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+
+        return Response({'success': True})
+

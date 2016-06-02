@@ -1,3 +1,4 @@
+braintree==3.27.0
 Django==1.9.6
 django-extensions==1.6.7
 djangorestframework==3.3.3
