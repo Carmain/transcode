@@ -13,7 +13,6 @@
           </div>
         </div>
       </template>
-
       <template v-else>
         <template v-if="user.authenticated">
           <convert-logged></convert-logged>
@@ -22,7 +21,14 @@
           <convert-guest></convert-guest>
         </template>
       </template>
+
+      <template v-if="uploadEnded">
+        <h2>The upload ended</h2>
+      </template>
     </div>
+    <template v-for="sentence in messages_content">
+      <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+    </template>
   </div>
 </template>
 
@@ -30,19 +36,23 @@
 import ConvertGuest from './pieces/ConvertGuest';
 import ConvertLogged from './pieces/ConvertLogged';
 import UploadForm from './pieces/UploadForm';
+import Message from './pieces/Message';
 import auth from '../auth';
 
 export default {
   components: {
     ConvertGuest,
     ConvertLogged,
-    UploadForm
+    UploadForm,
+    Message
   },
   data () {
     return {
       user: auth.user,
       uploadStarted: false,
-      progress: 0
+      uploadEnded: false,
+      progress: 0,
+      messages_content: []
     };
   },
   events: {
@@ -57,13 +67,13 @@ export default {
       this.uploadStarted = true;
     },
     displayError: function() {
-
+      this.messages_content.push("Something Went wrong with the upload");
     },
     getProgression: function(percentage) {
       this.progress = percentage;
     },
     uploadEnd: function() {
-
+      this.uploadEnded = true;
     }
   }
 };
