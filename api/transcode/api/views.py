@@ -11,7 +11,7 @@ from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, BaseParser
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from api.serializers import UserSerializer
 from rest_framework import permissions
 from urllib.request import urlopen
@@ -117,6 +117,12 @@ class Register(APIView):
                 status=status.HTTP_201_CREATED
             )
 
+class CheckPendingFiles(APIView):
+  def get(self, request):
+    if request.session.pending_file:
+      pending_file = request.session.pending_file
+      return Response({'success': True, 'file_uuid': pending_file.uuid})
+    return Response({'success': False})
 
 class BinaryParser(BaseParser):
     media_type = 'application/octet-stream'
@@ -185,8 +191,12 @@ class UploadEnd(APIView):
             uploadSession.save()
             uploadSession.file.reloadFileType()
 
+            if not request.user:
+                request.session.pending_file = UploadSession.file
+
         return Response({'success': success})
 
+@permission_classes((IsAuthenticated, ))
 class getPaypalToken(APIView):
     parser_classes = (JSONParser, )
 
@@ -195,4 +205,13 @@ class getPaypalToken(APIView):
         token = gateway.client_token.generate()
 
         return Response({'success': True, 'token': token})
+
+@permission_classes((IsAuthenticated, ))
+class checkout(APIView):
+    parser_classes = (JSONParser, )
+
+    def post(self, request):
+        gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+        payment_method_nonce = request.data.get("payment_method_nonce")
+
 
