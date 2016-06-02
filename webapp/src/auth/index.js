@@ -14,12 +14,18 @@ export default {
   login(credentials, redirect) {
     Vue.http.post(config.LOGIN_URL, credentials).then((res) => {
       localStorage.setItem("jwt", res.data.token);
+      this.user.authenticated = true;
+      this.setVueHeader();
 
       return this.loadUserInformations();
     }).then((user) => {
       this.user.username = user.username;
-      this.user.authenticated = true;
-      this.setVueHeader();
+      let fileUploaded = sessionStorage.getItem("fileUUID");
+
+      // if the user upload a file but doesn't connect
+      if(fileUploaded) {
+        router.go('paiement');
+      }
 
       if (redirect) {
         router.go(redirect);
