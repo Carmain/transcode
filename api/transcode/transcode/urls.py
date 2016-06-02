@@ -18,4 +18,5 @@ urlpatterns = [
     url(r'^upload-end/(?P<uuid>[0-9a-f]{32})/$', api_views.UploadEnd.as_view()),
     url(r'^paypal-token/$', api_views.getPaypalToken.as_view()),
     url(r'^checkout/$', api_views.checkout.as_view()),
+    url(r'^launch-conversion/$', api_views.launch_conversion.as_view()),
 ]
