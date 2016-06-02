@@ -77,7 +77,6 @@ export default {
       let remainingBytes = this.totalBytes - this.sentBytes;
       let bufferSize = Math.min(remainingBytes, chunkSize, this.file.size);
       let buffer = this.file.slice(this.sentBytes, this.sentBytes + bufferSize);
-      console.log(buffer);
       let reader = new FileReader();
 
       reader.addEventListener("loadend", () => {
@@ -96,7 +95,7 @@ export default {
             return;
           }
 
-          if (res.data.remains != (remainingBytes -  fileArray.byteLength)) {
+          if (res.data.remains != (remainingBytes - fileArray.byteLength)) {
             // Bytes sent & bytes received are not equals
             this.$dispatch("bytesNotEquals");
             return;
@@ -119,7 +118,6 @@ export default {
 
     uploadEnd: function () {
       let hash = md5Buffer.end();
-      console.log(hash);
       this.$http.post(`${config.UPLOAD_END_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
         if (res.data.success) {
           this.$dispatch("end");
@@ -134,7 +132,6 @@ export default {
 
     loadFile: function (file) {
       file = file[0];
-      console.log(file);
       this.file = file;
       this.totalBytes = this.file.size;
     }
