@@ -1,69 +1,79 @@
 <template>
   <div class ="container">
     <h1>Convert</h1>
-    <form enctype="multipart/form-data">
-
-      <div class="row">
-        <div class="form-group col-md-6 col-sm-6">
-          <label class="control-label" for="url">Provide us an URL</label>
-          <input class="form-control" id="url" type="text">
-        </div>
-        <div class="form-group col-md-6 col-sm-6">
-          <label class="control-label" for="upload">Or upload your file here</label>
-          <input type="file" id="upload">
-        </div>
-      </div>
-
-      <div class="form-group">
-        <label class="control-label" for="convert-type">I want my file converted into</label>
-        <select class="form-control" id="convert-type">
-          <optgroup label="Audio">
-            <template v-for="extension in audio">
-              <option v-bind:value="extension">{{ extension }}</option>
-            </template>
-          </optgroup>
-          <optgroup label="Video">
-            <template v-for="extension in video">
-              <option v-bind:value="extension">{{ extension }}</option>
-            </template>
-          </optgroup>
-        </select>
-      </div>
-
-      <button type="button" class="btn btn-primary pull-right" @click="uploadFile()">Submit</button>
-    </form>
-
+    <upload-form></upload-form>
     <div class="row margin-top">
-      <template v-if="user.authenticated">
-        <convert-logged></convert-logged>
+
+      <template v-if="uploadStarted">
+        <h3>The upload started</h3>
+        <div class="progress">
+          <!-- TODO: style="width:{{progress}}%" doesn't work with internet explorer -->
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{progress}}%">
+            {{progress}}%
+          </div>
+        </div>
       </template>
       <template v-else>
-        <convert-guest></convert-guest>
+        <template v-if="user.authenticated">
+          <convert-logged></convert-logged>
+        </template>
+        <template v-else>
+          <convert-guest></convert-guest>
+        </template>
+      </template>
+
+      <template v-if="uploadEnded">
+        <h2>The upload ended</h2>
       </template>
     </div>
+    <template v-for="sentence in messages_content">
+      <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+    </template>
   </div>
 </template>
 
 <script>
-import ConvertGuest from './pieces/Convert_guest';
-import ConvertLogged from './pieces/Convert_logged';
+import ConvertGuest from './pieces/ConvertGuest';
+import ConvertLogged from './pieces/ConvertLogged';
+import UploadForm from './pieces/UploadForm';
+import Message from './pieces/Message';
 import auth from '../auth';
 
 export default {
   components: {
     ConvertGuest,
-    ConvertLogged
+    ConvertLogged,
+    UploadForm,
+    Message
   },
   data () {
     return {
       user: auth.user,
-      audio: ['MP3', 'MPEG4', 'WAV'],
-      video: ['VID', 'YOLO', 'HUHU']
+      uploadStarted: false,
+      uploadEnded: false,
+      progress: 0,
+      messages_content: []
     };
   },
+  events: {
+    'start': 'uploadStarted',
+    'errorUpload': 'displayError',
+    'bytesNotEquals': 'displayError',
+    'progress': 'getProgression',
+    'end': 'uploadEnd'
+  },
   methods: {
-    uploadFile: function() {
-
+    uploadStarted: function() {
+      this.uploadStarted = true;
+    },
+    displayError: function() {
+      this.messages_content.push("Something Went wrong with the upload");
+    },
+    getProgression: function(percentage) {
+      this.progress = percentage;
+    },
+    uploadEnd: function() {
+      this.uploadEnded = true;
     }
   }
 };
@@ -77,6 +87,10 @@ export default {
 
   .margin-top {
     margin-top: 30px;
+  }
+
+  .upload-choice {
+    height: 60px;
   }
 
   .gl-x3 {

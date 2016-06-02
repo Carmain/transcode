@@ -124,18 +124,20 @@ class BinaryParser(BaseParser):
     def parse(self, stream, media_type=None, parser_context=None):
         return stream.read()
 
-
+@permission_classes((AllowAny, ))
 class CurrentUserView(APIView):
     def get(self, request):
         serializer = UserSerializer(request.user)
         return Response(serializer.data)
 
 
+@permission_classes((AllowAny, ))
 class UploadStart(APIView):
     parser_classes = (JSONParser,)
 
-    def get(self, request):
-        transcodeFile = TranscodeFile.objects.create()
+    def post(self, request):
+        file_size = request.data.get("fileSize")
+        transcodeFile = TranscodeFile.objects.create(size=file_size)
         uploadSession = UploadSession.objects.create(file=transcodeFile)
 
         return Response({
@@ -145,6 +147,7 @@ class UploadStart(APIView):
         })
 
 
+@permission_classes((AllowAny, ))
 class UploadChunk(APIView):
     parser_classes = (BinaryParser,)
 
@@ -155,12 +158,13 @@ class UploadChunk(APIView):
         userFile.write(request.data)
 
         uploadSession.state = 1
-        uploadSession.receivedBytes = len(request.data)
+        uploadSession.receivedBytes += len(request.data)
         uploadSession.save()
 
         return Response({'success': True, 'remains': uploadSession.remainingBytes})
 
 
+@permission_classes((AllowAny, ))
 class UploadEnd(APIView):
     parser_classes = (JSONParser, )
 

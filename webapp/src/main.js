@@ -14,7 +14,7 @@ import NotFound from './components/NotFound';
 Vue.use(VueRouter);
 Vue.use(VueResource);
 auth.checkAuth();
-auth.setVueHeader();
+
 
 let router = new VueRouter({
   history: true
