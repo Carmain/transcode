@@ -3,9 +3,11 @@ from converter import Converter
 from celery import Celery
 
 app = Celery('tasks', backend="amqp", broker="amqp://guest@localhost//")
+app.conf.CELERY_SEND_EVENTS = True
+app.conf.CELERY_SEND_TASK_SENT_EVENT = True
 
-@app.task
-def convert(filePath, destinationFormat):
+@app.task(name="convert")
+def convert(filePath, fileUUID):
   convert_options = {
     'format': 'mkv',
     'audio': {

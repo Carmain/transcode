@@ -12,25 +12,31 @@ TYPES_TABLE = {
 def generate_uuid4():
     return uuid.uuid4().hex
 
-class User(AbstractUser):
-    # first_name, last_name and username, password, email are already defined
-    # in AbstractUser
-    birthdate = models.DateTimeField(default=None, blank=True, null=True)
-
-
-class TranscodeFile(models.Model):
-    owner = models.ForeignKey("User", default=None, null=True, blank=True)
-    uuid = models.CharField(default=generate_uuid4, max_length=32)
-    fileType = models.CharField(choices=settings.SUPPORTED_FILES, default="tmp", max_length=3)
-    size = models.IntegerField()
+class FileMixin(object):
+    @property
+    def fileName(self):
+      return "{0}.{1}".format(self.uuid, self.fileType)
 
     @property
     def path(self):
       return os.path.join(settings.UPLOAD_DIRECTORY, self.fileName)
 
-    @property
-    def fileName(self):
-      return "{0}.{1}".format(self.uuid, self.fileType)
+
+class User(AbstractUser):
+    # first_name, last_name and username, password, email are already defined
+    # in AbstractUser
+    birthdate = models.DateTimeField(default=None, blank=True, null=True)
+
+class ConvertedFile(FileMixin, models.Model):
+    fileType = models.CharField(choices=settings.SUPPORTED_FILES, max_length=5)
+    transcode_file = models.ForeignKey("TranscodeFile")
+
+
+class TranscodeFile(FileMixin, models.Model):
+    owner = models.ForeignKey("User", default=None, null=True, blank=True)
+    uuid = models.CharField(default=generate_uuid4, max_length=32)
+    fileType = models.CharField(choices=settings.SUPPORTED_FILES, default="tmp", max_length=5)
+    size = models.IntegerField()
 
     def guessFileType(self):
       print(self.path)
@@ -61,3 +67,9 @@ class UploadSession(models.Model):
     @property
     def remainingBytes(self):
       return self.size - self.receivedBytes
+
+
+class ConvertJob(models.Model):
+    state = models.IntegerField(default=0)
+    file = models.ForeignKey("TranscodeFile")
+    task_uuid = models.CharField(max_length=32)
