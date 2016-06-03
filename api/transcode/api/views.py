@@ -5,6 +5,7 @@ import re
 import json
 import braintree
 
+from worker.main import convert
 from api.models import User, TranscodeFile, UploadSession
 from rest_framework import viewsets, status
 from rest_framework.decorators import permission_classes
@@ -205,7 +206,7 @@ class launch_conversion(APIView):
 
     def post(self, request):
         file_to_convert = TranscodeFile(request.data.get("file"))
-
+        convert.delay(file_to_convert.path)
         return Response({'success': True})
 
 

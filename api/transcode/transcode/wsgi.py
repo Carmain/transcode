@@ -17,7 +17,7 @@ import threading
 import atexit
 
 def monitor(app, lock_path):
-    from api.models import TranscodeFile, ConvertJob
+    from api.models import TranscodeFile, ConvertJob, ConvertedFile
 
     print("Celery monitoring started...")
     state = app.events.State()
@@ -26,7 +26,7 @@ def monitor(app, lock_path):
     def cleanup():
         os.remove(lock_path)
 
-    def failed_tasks(event):
+    def failed_task(event):
         state.event(event)
         task = state.tasks.get(event['uuid'])
 
@@ -34,23 +34,33 @@ def monitor(app, lock_path):
             task.name, task.uuid, task.info(), ))
 
     def sent_task(event):
-      print(event)
+      file_uuid = event.kwargs.get("fileUUID")
+      tr_file = TranscodeFile.objects.get(uuid=file_uuid)
+      ConvertJob.objects.create(file=tr_file, task_uuid=event.get("uuid"))
 
     def received_task(event):
-      print(event)
+      convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
+      convert_job.state = 1
+      convert_job.save()
 
-    def started_tasks(event):
-      pass
+    def started_task(event):
+      convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
+      convert_job.state = 2
+      convert_job.save()
 
-    def test(event):
-        print(event)
+    def succeeded_task(event):
+      convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
+      tr_file = convert_job.file
+      cv_file = ConvertedFile.objects.create(fileType="mkv", transcode_file=tr_file)
+
 
     with app.connection() as connection:
         recv = app.events.Receiver(connection, handlers={
-                'task-sent': sent_task,
-                'task-failed': failed_tasks,
-                'task-received': received_task,
-                'task-started': started_tasks
+            'task-sent': sent_task,
+            'task-failed': failed_task,
+            'task-received': received_task,
+            'task-started': started_task,
+            'task-succeeded': succeeded_task
         })
         recv.capture(limit=None, timeout=None, wakeup=True)
 
