@@ -102,6 +102,11 @@ export default {
         confirmation: ''
       }
     }
+  },
+  route: {
+    canActivate() {
+      return auth.user.authenticated;
+    }
   }
 }
 

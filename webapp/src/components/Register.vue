@@ -103,6 +103,11 @@ export default {
     onVerify: function(response) {
       this.credentials.recaptcha_verify = response;
     }
+  },
+  route: {
+    canActivate() {
+      return !auth.user.authenticated;
+    }
   }
 };
 </script>

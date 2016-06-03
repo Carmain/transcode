@@ -221,7 +221,7 @@ class checkout(APIView):
             "payment_method_nonce" : payment_method_nonce,
             "order_id" : 1,
             "descriptor": {
-              "name": "transcode*conversion"
+              "name": "company*my product"
             },
             "options" : {
               "paypal" : {

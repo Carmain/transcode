@@ -82,7 +82,7 @@ export default {
     uploadEnd: function() {
       this.uploadEnded = true;
       if(this.user.authenticated) {
-        this.$route.router.go('paiement');
+        this.$route.router.go('payment');
       }
     }
   }

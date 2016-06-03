@@ -11,8 +11,8 @@
       </div>
       <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
         <ul class="nav navbar-nav">
+          <li><a v-link="'convert'">Convert</a></li>
           <template v-if="user.authenticated">
-            <li><a v-link="'convert'">Convert</a></li>
             <li><a v-link="'update-my-profile'">Update my profile</a></li>
             <li><a @click="logout()">Logout</a></li>
           </template>
