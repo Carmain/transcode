@@ -28,17 +28,28 @@
     </table>
     <h2>Your bill</h2>
     <div id="paypal-container"></div>
+    <a v-show="payment_succeed" v-link="'convert'" class="btn btn-primary btn-block" role="button">CONVERT MY FILES NOW !</a>
+    <template v-for="sentence in messages_content">
+      <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+    </template>
   </div>
 </template>
 
 <script>
 import braintree from 'braintree-web';
+import Message from './pieces/Message';
 import config from "../config.js";
 import auth from '../auth';
 
 export default {
+  components: {
+    Message
+  },
   data () {
     return {
+      payment_succeed: false,
+      error_handler: false,
+      messages_content: [],
       ranges: [
         {
           duration: '1:00:00',
@@ -86,7 +97,19 @@ export default {
             {
               "payment_method_nonce": obj.nonce
             }).then((res) => {
-            console.log(res);
+            that.error_handler = false;
+
+            if(res.data.success) {
+              that.payment_succeed = true;
+            } else {
+              console.log("error");
+              let error_message = res.data.message;
+              if (error_message) {
+                that.messages_content.push(res.data.message);
+              } else {
+                that.messages_content.push("Something went wrong with paypal");
+              }
+            }
           });
         }
       });
