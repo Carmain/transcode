@@ -61,3 +61,9 @@ class UploadSession(models.Model):
     @property
     def remainingBytes(self):
       return self.size - self.receivedBytes
+
+
+class ConvertJob(models.Model):
+    state = models.IntegerField(default=0)
+    file = models.ForeignKey("TranscodeFile")
+    task_uuid = models.CharField(max_length=32)
