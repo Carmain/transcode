@@ -220,7 +220,7 @@ class checkout(APIView):
         result = gateway.transaction.sale({
             "amount" : 1,
             "payment_method_nonce" : payment_method_nonce,
-            "order_id" : 1,
+            "order_id" : uuid.uuid4().hex,
             "descriptor": {
               "name": "company*my product"
             },
