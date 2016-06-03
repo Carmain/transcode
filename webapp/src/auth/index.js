@@ -25,6 +25,7 @@ export default {
       // if the user upload a file but doesn't connect
       if(fileUploaded) {
         router.go('payment');
+        return;
       }
 
       if (redirect) {

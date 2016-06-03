@@ -128,5 +128,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .error-handler {
+    margin-top: 50px;
+  }
 </style>
