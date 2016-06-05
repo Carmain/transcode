@@ -6,7 +6,7 @@ import json
 import braintree
 
 from worker.main import convert
-from api.models import User, TranscodeFile, UploadSession
+from api.models import User, TranscodeFile, UploadSession, ConvertedFile
 from rest_framework import viewsets, status
 from rest_framework.decorators import permission_classes
 from rest_framework.views import APIView
@@ -235,3 +235,13 @@ class checkout(APIView):
             return Response({'success': True, 'transaction': result.transaction.id})
         else:
             return Response({'success': False, 'message': result.message})
+
+@permission_classes((AllowAny, ))
+class statistics(APIView):
+  parser_context = (JSONParser, )
+
+  def get(self, request):
+    converted_files = ConvertedFile.objects.all().count()
+    users = User.objects.all().count()
+
+    return Response({"convertedFiles": converted_files, "users": users})
