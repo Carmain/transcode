@@ -245,3 +245,11 @@ class statistics(APIView):
     users = User.objects.all().count()
 
     return Response({"convertedFiles": converted_files, "users": users})
+
+
+@permission_classes((AllowAny, ))
+class get_file_types(APIView):
+  parser_context = (JSONParser, )
+
+  def get(self, request):
+    return Response({"available_types": settings.SUPPORTED_FILES})
