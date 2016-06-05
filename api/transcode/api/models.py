@@ -26,6 +26,21 @@ class User(AbstractUser):
     # first_name, last_name and username, password, email are already defined
     # in AbstractUser
     birthdate = models.DateTimeField(default=None, blank=True, null=True)
+    disk_space = models.BigIntegerField(default=1e10)
+
+    @property
+    def used_space(self):
+      transcode_files = self.transcodefile_set.all()
+      used_space = 0
+
+      for file in transcode_files:
+        used_space += file.size
+
+      return used_space
+
+    @property
+    def free_space(self):
+      return self.disk_space - self.used_space
 
 class ConvertedFile(FileMixin, models.Model):
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, max_length=5)
