@@ -222,7 +222,7 @@ class checkout(APIView):
             "payment_method_nonce" : payment_method_nonce,
             "order_id" : uuid.uuid4().hex,
             "descriptor": {
-              "name": "company*my product"
+              "name": "transco*conversion"
             },
             "options" : {
               "paypal" : {
