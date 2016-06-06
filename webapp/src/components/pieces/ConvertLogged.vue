@@ -1,7 +1,7 @@
 <template>
   <div class="col-sm-6">
     <h2>Your stockage</h2>
-    <memory width="400" height="350" v-bind:memory="stockage"></memory>
+    <memory width="400" height="350"></memory>
   </div>
   <div class="col-sm-6">
     <h2>Your last converted files</h2>
@@ -34,7 +34,6 @@ export default {
   },
   data () {
     return {
-      stockage: [1654, 16819],
       last_files: [
         {
           name: 'yolo.mp3',

@@ -7,5 +7,5 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     model = User
     fields = ('id', 'email', 'username', 'last_login',
               'first_name', 'last_name', 'birthdate',
-              'disk_space', 'free_space')
+              'disk_space', 'free_space', 'used_space')
     read_only_fields = ('last_login', 'id',)
