@@ -85,7 +85,8 @@ class Register(APIView):
 
         data = urlencode(values)
         binary_data = data.encode('ascii')
-        result = urlopen('https://www.google.com/recaptcha/api/siteverify', binary_data)
+        result = urlopen('https://www.google.com/recaptcha/api/siteverify',
+                         binary_data)
         result_tostring = result.read().decode('utf-8')
         json_result = json.loads(result_tostring)
 
@@ -152,7 +153,7 @@ class UploadStart(APIView):
 class UploadChunk(APIView):
     parser_classes = (BinaryParser,)
 
-    #TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
+    # TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
     def post(self, request, uuid):
         uploadSession = UploadSession.objects.get(uuid=uuid)
         userFile = open(uploadSession.file.path, "ab")
@@ -162,7 +163,8 @@ class UploadChunk(APIView):
         uploadSession.receivedBytes += len(request.data)
         uploadSession.save()
 
-        return Response({'success': True, 'remains': uploadSession.remainingBytes})
+        return Response({'success': True,
+                         'remains': uploadSession.remainingBytes})
 
 
 @permission_classes((AllowAny, ))
@@ -189,12 +191,14 @@ class UploadEnd(APIView):
 
         return Response({'success': success, 'file_uuid': uploaded_file.uuid})
 
+
 @permission_classes((IsAuthenticated, ))
 class getPaypalToken(APIView):
     parser_classes = (JSONParser, )
 
     def get(self, request):
-        gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+        gateway = braintree.BraintreeGateway(
+            access_token=settings.PAYPAL_ACCESS_TOKEN)
         token = gateway.client_token.generate()
 
         return Response({'success': True, 'token': token})
@@ -215,42 +219,44 @@ class checkout(APIView):
     parser_classes = (JSONParser, )
 
     def post(self, request):
-        gateway = braintree.BraintreeGateway(access_token=settings.PAYPAL_ACCESS_TOKEN)
+        gateway = braintree.BraintreeGateway(
+            access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
         result = gateway.transaction.sale({
-            "amount" : 1,
-            "payment_method_nonce" : payment_method_nonce,
-            "order_id" : uuid.uuid4().hex,
+            "amount": 1,
+            "payment_method_nonce": payment_method_nonce,
+            "order_id": uuid.uuid4().hex,
             "descriptor": {
               "name": "transco*conversion"
             },
-            "options" : {
-              "paypal" : {
-                "custom_field" : "PayPal custom field",
-                "description" : "Description for PayPal email receipt"
+            "options": {
+              "paypal": {
+                "custom_field": "PayPal custom field",
+                "description"  "Description for PayPal email receipt"
               },
             }
         })
         if result.is_success:
-            return Response({'success': True, 'transaction': result.transaction.id})
+            return Response({'success': True,
+                             'transaction': result.transaction.id})
         else:
             return Response({'success': False, 'message': result.message})
 
 
 @permission_classes((AllowAny, ))
 class statistics(APIView):
-  parser_context = (JSONParser, )
+    parser_context = (JSONParser, )
 
-  def get(self, request):
-    converted_files = ConvertedFile.objects.all().count()
-    users = User.objects.all().count()
+    def get(self, request):
+        converted_files = ConvertedFile.objects.all().count()
+        users = User.objects.all().count()
 
-    return Response({"converted_files": converted_files, "users": users})
+        return Response({"converted_files": converted_files, "users": users})
 
 
 @permission_classes((AllowAny, ))
 class get_file_types(APIView):
-  parser_context = (JSONParser, )
+    parser_context = (JSONParser, )
 
-  def get(self, request):
-    return Response({"available_types": settings.SUPPORTED_FILES})
+    def get(self, request):
+        return Response({"available_types": settings.SUPPORTED_FILES})
