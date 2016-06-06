@@ -5,7 +5,8 @@ import config from "../config.js";
 export default {
   user: {
     authenticated: false,
-    username: ""
+    username: "",
+    email: ""
   },
   state: {
     checked: false
@@ -20,6 +21,7 @@ export default {
       return this.loadUserInformations();
     }).then((user) => {
       this.user.username = user.username;
+      this.user.email = user.email;
       let fileUploaded = sessionStorage.getItem("fileUUID");
 
       // if the user upload a file but doesn't connect
