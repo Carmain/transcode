@@ -1,6 +1,6 @@
 <template>
   <a href="https://gravatar.com" title="Gravatar" target="_blank">
-    <img v-bind:src="gravatar" class="img-responsive center-block"/>
+    <img v-bind:src="gravatar" />
   </a>
 </template>
 
