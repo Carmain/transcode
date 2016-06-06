@@ -236,6 +236,7 @@ class checkout(APIView):
         else:
             return Response({'success': False, 'message': result.message})
 
+
 @permission_classes((AllowAny, ))
 class statistics(APIView):
   parser_context = (JSONParser, )
@@ -244,7 +245,7 @@ class statistics(APIView):
     converted_files = ConvertedFile.objects.all().count()
     users = User.objects.all().count()
 
-    return Response({"convertedFiles": converted_files, "users": users})
+    return Response({"converted_files": converted_files, "users": users})
 
 
 @permission_classes((AllowAny, ))
