@@ -5,17 +5,25 @@
   </div>
   <div class="col-sm-6 text-center">
     <span class="glyphicon glyphicon-globe gl-x12" aria-hidden="true"></span>
-    <h2><b>{{ registered_users }}</b> user trust the power of transcode</h2>
+    <h2><b>{{ registered_users }}</b> users trust the power of transcode</h2>
   </div>
 </template>
 
 <script>
+import config from "../../config.js";
+
 export default {
   data () {
     return {
-      converted_files: 654654,
-      registered_users: 89764,
+      converted_files: '',
+      registered_users: ''
     };
-  }
+  },
+  ready () {
+    this.$http.get(config.STATISTICS).then((res) => {
+      this.converted_files = res.data.converted_files;
+      this.registered_users = res.data.users;
+    });
+  },
 };
 </script>
