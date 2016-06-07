@@ -139,7 +139,8 @@ class UploadStart(APIView):
 
     def post(self, request):
         file_size = request.data.get("fileSize")
-        transcodeFile = TranscodeFile.objects.create(size=file_size)
+        file_name = request.data.get("fileName")
+        transcodeFile = TranscodeFile.objects.create(size=file_size, name=file_name)
         uploadSession = UploadSession.objects.create(file=transcodeFile)
 
         return Response({

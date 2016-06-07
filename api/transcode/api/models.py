@@ -51,6 +51,7 @@ class TranscodeFile(FileMixin, models.Model):
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, default="tmp", max_length=5)
     size = models.IntegerField()
     duration = models.FloatField(default=0.0)
+    name = models.CharField(max_length=256)
 
     def fetchMetaDatas(self):
       c = Converter()
