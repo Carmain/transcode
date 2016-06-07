@@ -6,6 +6,7 @@ app = Celery('tasks', backend="amqp", broker="amqp://guest@localhost//")
 app.conf.CELERY_SEND_EVENTS = True
 app.conf.CELERY_SEND_TASK_SENT_EVENT = True
 
+
 @app.task(name="convert")
 def convert(filePath, fileUUID):
   convert_options = {
@@ -36,8 +37,3 @@ def convert(filePath, fileUUID):
 
   for timecode in conv:
     pass
-
-  sendMail(path.basename(filePath))
-
-def sendMail(fileName, address):
-  return False

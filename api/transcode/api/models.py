@@ -6,7 +6,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 TYPES_TABLE = {
-    "audio/mpeg": "mp3"
+    "audio/mpeg": "mp3",
+    "video/x-msvideo": "avi"
 }
 
 
@@ -59,6 +60,7 @@ class TranscodeFile(FileMixin, models.Model):
     def guessFileType(self):
         print(self.path)
         mimeType = magic.from_file(self.path, mime=True).decode("utf-8")
+        print(mimeType)
         if mimeType in TYPES_TABLE:
             return TYPES_TABLE.get(mimeType)
         return mimeType.split("/")[1]

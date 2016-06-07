@@ -209,7 +209,7 @@ class launch_conversion(APIView):
     parser_classes = (JSONParser, )
 
     def post(self, request):
-        file_to_convert = TranscodeFile(request.data.get("file"))
+        file_to_convert = TranscodeFile.objects.get(uuid=request.data.get("file"))
         convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid)
         return Response({'success': True})
 
