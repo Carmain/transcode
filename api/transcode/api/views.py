@@ -139,7 +139,8 @@ class UploadStart(APIView):
 
     def post(self, request):
         file_size = request.data.get("fileSize")
-        transcodeFile = TranscodeFile.objects.create(size=file_size)
+        file_name = request.data.get("fileName")
+        transcodeFile = TranscodeFile.objects.create(size=file_size, name=file_name)
         uploadSession = UploadSession.objects.create(file=transcodeFile)
 
         return Response({
@@ -187,7 +188,7 @@ class UploadEnd(APIView):
         if success:
             uploadSession.state = 3
             uploadSession.save()
-            uploaded_file.reloadFileType()
+            uploaded_file.fetchMetaDatas()
 
         return Response({'success': success, 'file_uuid': uploaded_file.uuid})
 

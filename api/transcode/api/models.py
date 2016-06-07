@@ -1,15 +1,9 @@
-import uuid
-import magic
-import os
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-
-TYPES_TABLE = {
-    "audio/mpeg": "mp3",
-    "video/x-msvideo": "avi"
-}
-
+from converter import Converter
+import uuid
+import os
 
 def generate_uuid4():
     return uuid.uuid4().hex
@@ -56,22 +50,22 @@ class TranscodeFile(FileMixin, models.Model):
     uuid = models.CharField(default=generate_uuid4, max_length=32)
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, default="tmp", max_length=5)
     size = models.IntegerField()
+    duration = models.FloatField(default=0.0)
+    name = models.CharField(max_length=256)
 
-    def guessFileType(self):
-        print(self.path)
-        mimeType = magic.from_file(self.path, mime=True).decode("utf-8")
-        print(mimeType)
-        if mimeType in TYPES_TABLE:
-            return TYPES_TABLE.get(mimeType)
-        return mimeType.split("/")[1]
+    def fetchMetaDatas(self):
+      c = Converter()
+      infos = c.probe(self.path)
 
-    def reloadFileType(self):
-        oldPath = self.path
-        self.fileType = self.guessFileType()
-        self.save()
+      if infos is None:
+        os.remove(self.path)
+        raise TypeError("File is not a valid media.")
 
-        os.rename(oldPath, self.path)
-
+      old_path = self.path
+      self.duration = infos.streams[0].duration
+      self.fileType = infos.format.format
+      self.save()
+      os.rename(old_path, self.path)
 
 class UploadSession(models.Model):
     file = models.ForeignKey("TranscodeFile")
