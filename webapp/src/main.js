@@ -10,6 +10,7 @@ import Register from './components/Register';
 import Convert from './components/Convert';
 import Update from './components/Update';
 import Paid from './components/Paid';
+import SuccessTranscode from './components/SuccessTranscode';
 import NotFound from './components/NotFound';
 
 Vue.use(VueRouter);
@@ -45,6 +46,10 @@ router.map({
   '/payment': {
     name: 'payment',
     component: Paid
+  },
+  '/success/:fileUUID': {
+    name: 'success',
+    component: SuccessTranscode
   },
   '/404': {
     name: '404',
