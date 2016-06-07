@@ -20,5 +20,5 @@ urlpatterns = [
     url(r'^launch-conversion/$', api_views.launch_conversion.as_view()),
     url(r'^statistics/$', api_views.statistics.as_view()),
     url(r'^file-types/$', api_views.get_file_types.as_view()),
-    url(r'^converted-files/$', api_views.get_converted_files.as_view()),
+    url(r'^converted-files/(?P<limit>[0-9]+)$', api_views.get_converted_files.as_view()),
 ]
