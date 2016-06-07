@@ -232,7 +232,7 @@ class checkout(APIView):
             "options": {
               "paypal": {
                 "custom_field": "PayPal custom field",
-                "description"  "Description for PayPal email receipt"
+                "description": "Description for PayPal email receipt"
               },
             }
         })
