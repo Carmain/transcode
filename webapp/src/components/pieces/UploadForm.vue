@@ -40,7 +40,12 @@ export default {
   },
   methods: {
     uploadStart: function () {
-      this.$http.post(config.UPLOAD_START_URL, {fileSize: this.file.size}).then((res) => {
+      let jsonObject = {
+        fileSize: this.file.size,
+        fileName: this.file.name
+      };
+
+      this.$http.post(config.UPLOAD_START_URL, jsonObject).then((res) => {
         if (res.data.success) {
           uploadSessionID = res.data.uuid;
           chunkSize = res.data.chunkSize;
@@ -101,12 +106,15 @@ export default {
         if (res.data.success) {
           sessionStorage.setItem("fileUUID", res.data.file_uuid);
           this.$dispatch("end");
+        } else {
+          this.$dispatch("errorUploadEnd", response.data.message);
         }
       });
     },
 
     progress: function () {
       let percentage = Math.round((this.sentBytes / this.totalBytes) * 100);
+      this.$dispatch("errorUpload");
       this.$dispatch("progress", percentage);
     },
 

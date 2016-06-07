@@ -67,6 +67,7 @@ export default {
     'errorUpload': 'displayError',
     'bytesNotEquals': 'displayError',
     'progress': 'getProgression',
+    'errorUploadEnd': 'errorUploadEnd',
     'end': 'uploadEnd'
   },
   methods: {
@@ -78,6 +79,9 @@ export default {
     },
     getProgression: function(percentage) {
       this.progress = percentage;
+    },
+    errorUploadEnd: function(errorMessage) {
+      this.messages_content.push(errorMessage);
     },
     uploadEnd: function() {
       this.uploadEnded = true;
