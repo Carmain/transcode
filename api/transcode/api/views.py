@@ -271,7 +271,7 @@ class get_file_types(APIView):
 class get_converted_files(APIView):
   parser_context = (JSONParser,)
 
-  def get(self, request):
-      files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set.all())
+  def post(self, request, limit=15):
+      files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set.all())[:limit]
       serializer = ConvertedFileSerializer(files, many=True)
       return Response(serializer.data)
