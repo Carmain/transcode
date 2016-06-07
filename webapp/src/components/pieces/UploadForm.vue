@@ -105,6 +105,7 @@ export default {
       this.$http.post(`${config.UPLOAD_END_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
         if (res.data.success) {
           sessionStorage.setItem("fileUUID", res.data.file_uuid);
+          sessionStorage.setItem("price", res.data.price);
           this.$dispatch("end");
         } else {
           this.$dispatch("errorUploadEnd", response.data.message);

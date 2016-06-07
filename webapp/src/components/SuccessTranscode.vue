@@ -15,6 +15,7 @@ export default {
   },
   ready () {
     sessionStorage.removeItem("fileUUID");
+    sessionStorage.removeItem("price");
   },
   route: {
     canActivate(transition) {

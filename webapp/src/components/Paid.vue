@@ -28,6 +28,9 @@
     </table>
 
     <h2>Your bill</h2>
+    <p>
+      you'll be debited from <b>{{ amount }} €</b> after this transaction.
+    </p>
     <div class="paypal-button" id="paypal-container"></div>
     <form v-show="payment_succeed">
       <div class="form-group">
@@ -68,6 +71,7 @@ export default {
     return {
       payment_succeed: false,
       error_handler: false,
+      amount : '',
       messages_content: [],
       format: {
         audio: ['MP3', 'MPEG4', 'WAV'],
@@ -103,15 +107,15 @@ export default {
   },
   ready () {
     let that = this;
+    let price = sessionStorage.getItem("price");
+    this.amount = price;
     this.$http.get(config.PAYPAL_TOKEN).then((res) => {
       let paypalToken = res.data.token;
-
-
       braintree.setup(paypalToken, "custom", {
         paypal: {
           container: "paypal-container",
           singleUse: true,
-          amount: 1.00,
+          amount: price,
           currency: 'USD',
           locale: 'en_us'
         },
