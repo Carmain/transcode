@@ -46,7 +46,7 @@
         </select>
       </div>
 
-      <a v-link="'convert'" class="btn btn-primary btn-block" role="button" @click="convertFiles()">CONVERT MY FILES NOW !</a>
+      <button class="btn btn-primary btn-block" type="button" @click="convertFiles()">CONVERT MY FILES NOW</button>
     </form>
     <template v-for="sentence in messages_content">
       <message tag="danger" title="Waning" v-bind:message="sentence"></message>
@@ -139,14 +139,14 @@ export default {
   },
   methods: {
     convertFiles: function() {
+      let uuid = sessionStorage.getItem("fileUUID");
       let jsonObject = {
-        file: sessionStorage.getItem("fileUUID")
+        file: uuid
       };
 
       this.$http.post(config.CONVERT_URL, jsonObject).then((res) => {
         if(res.data.success) {
-          console.log("Upload start");
-          sessionStorage.removeItem("fileUUID");
+          this.$route.router.go({ name: 'success', params: { fileUUID: uuid }});
         } else {
           console.log("error");
           let error_message = res.data.message;
