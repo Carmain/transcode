@@ -13,7 +13,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.parsers import JSONParser, BaseParser
 from rest_framework.permissions import AllowAny, IsAuthenticated
-from api.serializers import UserSerializer
+from api.serializers import UserSerializer, ConvertedFileSerializer
 from rest_framework import permissions
 from urllib.request import urlopen
 from urllib.parse import urlencode
@@ -264,3 +264,11 @@ class get_file_types(APIView):
 
     def get(self, request):
         return Response({"available_types": settings.SUPPORTED_FILES})
+
+class get_converted_files(APIView):
+  parser_context = (JSONParser,)
+
+  def get(self, request):
+      files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set)
+      serializer = ConvertedFileSerializer(files)
+      return Response(serializer.data)

@@ -43,6 +43,7 @@ class User(AbstractUser):
 class ConvertedFile(FileMixin, models.Model):
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, max_length=5)
     transcode_file = models.ForeignKey("TranscodeFile")
+    date = models.DateTimeField(auto_now_add=True)
 
 
 class TranscodeFile(FileMixin, models.Model):
