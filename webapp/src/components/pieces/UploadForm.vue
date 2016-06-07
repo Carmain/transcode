@@ -16,23 +16,6 @@
       <input class="form-control" id="url" type="text" v-model="url">
     </div>
     <hr />
-
-    <div class="form-group">
-      <label class="control-label" for="convert-type">I want my file converted into</label>
-      <select class="form-control" id="convert-type">
-        <optgroup label="Audio">
-          <template v-for="extension in format.audio">
-            <option v-bind:value="extension">{{ extension }}</option>
-          </template>
-        </optgroup>
-        <optgroup label="Video">
-          <template v-for="extension in format.video">
-            <option v-bind:value="extension">{{ extension }}</option>
-          </template>
-        </optgroup>
-      </select>
-    </div>
-
     <button type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
   </form>
 </template>
@@ -51,10 +34,6 @@ export default {
       file: '',
       url: '',
       uploadType: '',
-      format: {
-        audio: ['MP3', 'MPEG4', 'WAV'],
-        video: ['VID', 'YOLO', 'HUHU']
-      },
       sentBytes: 0,
       totalBytes: 0
     };
