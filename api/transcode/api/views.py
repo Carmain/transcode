@@ -269,6 +269,6 @@ class get_converted_files(APIView):
   parser_context = (JSONParser,)
 
   def get(self, request):
-      files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set)
+      files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set.all())
       serializer = ConvertedFileSerializer(files)
       return Response(serializer.data)
