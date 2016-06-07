@@ -187,7 +187,7 @@ class UploadEnd(APIView):
         if success:
             uploadSession.state = 3
             uploadSession.save()
-            uploaded_file.reloadFileType()
+            uploaded_file.fetchMetaDatas()
 
         return Response({'success': success, 'file_uuid': uploaded_file.uuid})
 
