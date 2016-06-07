@@ -1,6 +1,7 @@
 const API_URL = "//transcode_wololo.wololo.fr";
 
 const STATISTICS = API_URL + "/statistics/";
+const CONVERTED_FILES = API_URL + "/converted-files/";
 
 const LOGIN_URL = API_URL + "/auth/";
 const REGISTER_URL = API_URL + "/register/";
@@ -21,6 +22,7 @@ const RECAPTCHA_PUBLIC_KEY = "XXXXXXXXXXXXXX_XXXXXXX-XXXXXXXX";
 export default {
   API_URL,
   STATISTICS,
+  CONVERTED_FILES,
   LOGIN_URL,
   REGISTER_URL,
   PROFILE_URL,

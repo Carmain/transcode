@@ -118,7 +118,8 @@ export default {
         onPaymentMethodReceived: (obj) => {
           that.$http.post(config.PAYPAL_CHECKOUT,
             {
-              "payment_method_nonce": obj.nonce
+              "payment_method_nonce": obj.nonce,
+              "fileUUID": sessionStorage.getItem("fileUUID")
             }).then((res) => {
             that.error_handler = false;
 
