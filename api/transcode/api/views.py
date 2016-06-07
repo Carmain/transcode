@@ -206,7 +206,7 @@ class launch_conversion(APIView):
 
     def post(self, request):
         file_to_convert = TranscodeFile(request.data.get("file"))
-        convert.delay(file_to_convert.path)
+        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid)
         return Response({'success': True})
 
 
