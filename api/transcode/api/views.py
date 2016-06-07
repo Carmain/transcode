@@ -17,6 +17,7 @@ from api.serializers import UserSerializer, ConvertedFileSerializer
 from rest_framework import permissions
 from urllib.request import urlopen
 from urllib.parse import urlencode
+from api.utils import get_price
 from django.conf import settings
 from os import path
 
@@ -182,7 +183,10 @@ class UploadEnd(APIView):
                 hash_md5.update(chunk)
 
         hash_md5 = hash_md5.hexdigest()
-        success = user_file_md5 == hash_md5
+
+        if user_file_md5 != hash_md5:
+          return Response({'success': False, 'message': 'Bad MD5 hash'})
+
         uploaded_file = uploadSession.file
 
         if success:
@@ -193,7 +197,11 @@ class UploadEnd(APIView):
             except TypeError as e:
               return Response({'success': False, 'message': str(e)})
 
-        return Response({'success': success, 'file_uuid': uploaded_file.uuid})
+        return Response({
+          'success': True,
+          'file_uuid': uploaded_file.uuid,
+          'price': get_price(uploaded_file.duration)
+          })
 
 
 @permission_classes((IsAuthenticated, ))
