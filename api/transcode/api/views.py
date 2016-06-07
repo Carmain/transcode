@@ -188,7 +188,10 @@ class UploadEnd(APIView):
         if success:
             uploadSession.state = 3
             uploadSession.save()
-            uploaded_file.fetchMetaDatas()
+            try:
+              uploaded_file.fetchMetaDatas()
+            except TypeError as e:
+              return Response({'success': False, 'message': str(e)})
 
         return Response({'success': success, 'file_uuid': uploaded_file.uuid})
 
