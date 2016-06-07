@@ -28,7 +28,7 @@
     </table>
     <h2>Your bill</h2>
     <div id="paypal-container"></div>
-    <a v-show="payment_succeed" v-link="'convert'" class="btn btn-primary btn-block" role="button">CONVERT MY FILES NOW !</a>
+    <a v-show="payment_succeed" v-link="'convert'" class="btn btn-primary btn-block" role="button" @click="convertFiles()">CONVERT MY FILES NOW !</a>
     <template v-for="sentence in messages_content">
       <message tag="danger" title="Waning" v-bind:message="sentence"></message>
     </template>
@@ -102,7 +102,6 @@ export default {
             if(res.data.success) {
               that.payment_succeed = true;
             } else {
-              console.log("error");
               let error_message = res.data.message;
               if (error_message) {
                 that.messages_content.push(res.data.message);
@@ -114,6 +113,29 @@ export default {
         }
       });
     });
+  },
+  methods: {
+    convertFiles: function() {
+      let jsonObject = {
+        file: sessionStorage.getItem("fileUUID")
+      };
+
+      this.$http.post(config.CONVERT_URL, jsonObject).then((res) => {
+        if(res.data.success) {
+          console.log("Upload start");
+          sessionStorage.removeItem("fileUUID");
+        } else {
+          console.log("error");
+          let error_message = res.data.message;
+          if (error_message) {
+            that.messages_content.push(res.data.message);
+          } else {
+            that.messages_content.push("Something went wrong with the conversion");
+          }
+        }
+
+      });
+    }
   },
   route: {
     canActivate() {
