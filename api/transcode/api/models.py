@@ -53,6 +53,7 @@ class TranscodeFile(FileMixin, models.Model):
     size = models.IntegerField()
     duration = models.FloatField(default=0.0)
     name = models.CharField(max_length=256)
+    media_type = models.CharField(max_length=32)
 
     def fetchMetaDatas(self):
       c = Converter()
@@ -63,8 +64,20 @@ class TranscodeFile(FileMixin, models.Model):
         raise TypeError("File is not a valid media.")
 
       old_path = self.path
+
+      if (len(infos.streams) == 2):
+          self.media_type = "video"
+      elif (len(infos.streams) == 1):
+          self.media_type = "audio"
+      else:
+          self.media_type = "unknown"
+
       self.duration = infos.streams[0].duration
-      self.fileType = infos.format.format
+      file_format = infos.format.format
+      if "mp4" in file_format:
+          # Fix for ugly MP4 file formats
+          file_format = "mp4"
+      self.fileType = file_format
       self.save()
       os.rename(old_path, self.path)
 

@@ -223,6 +223,7 @@ class checkout(APIView):
     parser_classes = (JSONParser, )
 
     def post(self, request):
+        transcode_file = TranscodeFile.objects.get(uuid=request.data.get('fileUUID'))
         gateway = braintree.BraintreeGateway(
             access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
@@ -241,6 +242,8 @@ class checkout(APIView):
             }
         })
         if result.is_success:
+            transcode_file.owner = request.user
+            transcode_file.save()
             return Response({'success': True,
                              'transaction': result.transaction.id})
         else:
@@ -270,5 +273,5 @@ class get_converted_files(APIView):
 
   def post(self, request, limit=15):
       files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set.all())[:limit]
-      serializer = ConvertedFileSerializer(files)
+      serializer = ConvertedFileSerializer(files, many=True)
       return Response(serializer.data)
