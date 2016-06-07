@@ -7,7 +7,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" v-link="{ path:'/'}">Home</a>
+        <a class="navbar-brand" v-link="{ path:'/'}">
+          <template v-if="user.authenticated">
+            <gravatar size='25' v-bind:email='user.email'></gravatar> Welcome {{ user.username }}
+          </template>
+          <template v-else>
+            Home
+          </template>
+        </a>
       </div>
       <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
         <ul class="nav navbar-nav">
@@ -27,13 +34,18 @@
 </template>
 
 <script>
-  import auth from '../../auth'
+  import auth from '../../auth';
+  import config from '../../config';
+  import Gravatar from './Gravatar';
 
   export default {
+    components: {
+      Gravatar
+    },
     data () {
       return {
         user: auth.user
-      }
+      };
     },
     methods: {
       logout () {
@@ -41,7 +53,7 @@
         this.$route.router.go('/');
       }
     }
-  }
+  };
 </script>
 
 <style scope>

@@ -94,8 +94,9 @@ JWT_AUTH = {
 
 SUPPORTED_FILES = (
     ("mvk", "Matroska"),
-    ("png", "PNG Image"),
-    ("tmp", "Temporary"),
+    ("mp3", "MPEG 3 Audio"),
+    ("mp4", "MPEG 4 Video"),
+    ("avi", "Audio Video Interleaved"),
 )
 
 # Static files (CSS, JavaScript, Images)

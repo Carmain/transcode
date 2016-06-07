@@ -3,16 +3,26 @@
 </template>
 
 <script>
+import config from '../../config'
 import Chart from 'chart.js';
 
 export default {
   props: [
     "width",
-    "height",
-    "memory"
+    "height"
   ],
+  data () {
+    return {
+      memory: []
+    };
+  },
   ready () {
-    this.displayChart();
+    this.$http.get(config.PROFILE_URL).then((res) => {
+      console.log(res);
+      this.memory = [res.data.used_space, res.data.free_space];
+
+      this.displayChart();
+    });
   },
   methods: {
     displayChart: function () {

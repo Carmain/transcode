@@ -26,19 +26,53 @@
         </template>
       </tbody>
     </table>
+
     <h2>Your bill</h2>
-    <div id="paypal-container"></div>
+    <div class="paypal-button" id="paypal-container"></div>
+    <form v-show="payment_succeed">
+      <div class="form-group">
+        <label class="control-label" for="convert-type">I want my file converted into</label>
+        <select class="form-control" id="convert-type">
+          <optgroup label="Audio">
+            <template v-for="extension in format.audio">
+              <option v-bind:value="extension">{{ extension }}</option>
+            </template>
+          </optgroup>
+          <optgroup label="Video">
+            <template v-for="extension in format.video">
+              <option v-bind:value="extension">{{ extension }}</option>
+            </template>
+          </optgroup>
+        </select>
+      </div>
+
+      <a v-link="'convert'" class="btn btn-primary btn-block" role="button" @click="convertFiles()">CONVERT MY FILES NOW !</a>
+    </form>
+    <template v-for="sentence in messages_content">
+      <message tag="danger" title="Waning" v-bind:message="sentence"></message>
+    </template>
   </div>
 </template>
 
 <script>
 import braintree from 'braintree-web';
+import Message from './pieces/Message';
 import config from "../config.js";
 import auth from '../auth';
 
 export default {
+  components: {
+    Message
+  },
   data () {
     return {
+      payment_succeed: false,
+      error_handler: false,
+      messages_content: [],
+      format: {
+        audio: ['MP3', 'MPEG4', 'WAV'],
+        video: ['VID', 'YOLO', 'HUHU']
+      },
       ranges: [
         {
           duration: '1:00:00',
@@ -86,11 +120,45 @@ export default {
             {
               "payment_method_nonce": obj.nonce
             }).then((res) => {
-            console.log(res);
+            that.error_handler = false;
+
+            if(res.data.success) {
+              that.payment_succeed = true;
+            } else {
+              let error_message = res.data.message;
+              if (error_message) {
+                that.messages_content.push(res.data.message);
+              } else {
+                that.messages_content.push("Something went wrong with paypal");
+              }
+            }
           });
         }
       });
     });
+  },
+  methods: {
+    convertFiles: function() {
+      let jsonObject = {
+        file: sessionStorage.getItem("fileUUID")
+      };
+
+      this.$http.post(config.CONVERT_URL, jsonObject).then((res) => {
+        if(res.data.success) {
+          console.log("Upload start");
+          sessionStorage.removeItem("fileUUID");
+        } else {
+          console.log("error");
+          let error_message = res.data.message;
+          if (error_message) {
+            that.messages_content.push(res.data.message);
+          } else {
+            that.messages_content.push("Something went wrong with the conversion");
+          }
+        }
+
+      });
+    }
   },
   route: {
     canActivate() {
@@ -105,5 +173,11 @@ export default {
 </script>
 
 <style scoped>
+  .error-handler {
+    margin-top: 50px;
+  }
 
+  .paypal-button {
+    margin-bottom: 30px;
+  }
 </style>

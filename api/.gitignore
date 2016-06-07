@@ -66,3 +66,6 @@ db.sqlite3
 
 # Configuration file
 local_settings.py
+
+# Lock file
+transcode/transcode/monitor.lock
