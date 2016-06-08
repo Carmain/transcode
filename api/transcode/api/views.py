@@ -276,10 +276,25 @@ class get_file_types(APIView):
         return Response({"available_types": settings.SUPPORTED_FILES})
 
 class get_converted_files(APIView):
-  parser_context = (JSONParser,)
+  parser_context = (JSONParser, )
 
   def get(self, request, limit=15):
       limit = int(limit)
       files = ConvertedFile.objects.filter(transcode_file__in=request.user.transcodefile_set.all())[:limit]
       serializer = ConvertedFileSerializer(files, many=True)
       return Response(serializer.data)
+
+class delete_converted_file(APIView):
+  parser_context = (JSONParser, )
+
+  def delete(self, request, uuid):
+    file_to_delete = request.user.transcodefile_set.filter(uuid=uuid)
+    deleted_obj = file_to_delete.delete()
+
+    if deleted_obj == 0:
+      return Response({'success': False})
+
+    return Response({'success': True})
+
+
+

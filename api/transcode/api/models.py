@@ -45,6 +45,14 @@ class ConvertedFile(FileMixin, models.Model):
     transcode_file = models.ForeignKey("TranscodeFile")
     date = models.DateTimeField(auto_now_add=True)
 
+    @property
+    def uuid(self):
+      return self.transcode_file.uuid
+
+    def delete(self):
+      os.remove(self.filePath)
+      super(ConvertedFile, self).delete()
+
 
 class TranscodeFile(FileMixin, models.Model):
     owner = models.ForeignKey("User", default=None, null=True, blank=True)
@@ -55,12 +63,17 @@ class TranscodeFile(FileMixin, models.Model):
     name = models.CharField(max_length=256)
     media_type = models.CharField(max_length=32)
 
+    def delete(self):
+      self.convertedfile_set.all().delete()
+      os.remove(self.filePath)
+      super(TranscodeFile, self).delete()
+
     def fetchMetaDatas(self):
       c = Converter()
       infos = c.probe(self.path)
 
       if infos is None:
-        os.remove(self.path)
+        self.delete()
         raise TypeError("File is not a valid media.")
 
       old_path = self.path
