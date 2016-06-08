@@ -227,7 +227,10 @@ class launch_conversion(APIView):
 
     def post(self, request):
         file_to_convert = TranscodeFile.objects.get(uuid=request.data.get("file"))
-        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid)
+        dest_format = request.data.get("format")
+        dest_codec = request.data.get("codec")
+        dest_type = (dest_format, dest_codec)
+        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid, dest_type)
         return Response({'success': True})
 
 
