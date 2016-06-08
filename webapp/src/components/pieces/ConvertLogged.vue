@@ -1,6 +1,6 @@
 <template>
   <div class="col-sm-6">
-    <h2>Your stockage</h2>
+    <h2>Your storage</h2>
     <memory width="400" height="350"></memory>
   </div>
   <div class="col-sm-6">

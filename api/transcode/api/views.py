@@ -64,7 +64,7 @@ class Register(APIView):
             errors.append('Missing email')
         elif User.objects.filter(email=email).exists():
             failure = True
-            errors.append('Missing email')
+            errors.append('Wrong email')
 
         if not password:
             failure = True
@@ -298,6 +298,3 @@ class delete_converted_file(APIView):
       return Response({'success': False})
 
     return Response({'success': True})
-
-
-

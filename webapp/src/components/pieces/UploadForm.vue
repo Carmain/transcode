@@ -107,8 +107,11 @@ export default {
       let hash = md5Buffer.end();
       this.$http.post(`${config.UPLOAD_END_URL}${uploadSessionID}/`, {md5: hash}).then((res) => {
         if (res.data.success) {
+          let conversion = res.data.available_types;
+
           sessionStorage.setItem("fileUUID", res.data.file_uuid);
           sessionStorage.setItem("price", res.data.price);
+          sessionStorage.setItem("encoding", JSON.stringify(conversion));
           this.$dispatch("end");
         } else {
           this.uploadError = true;
