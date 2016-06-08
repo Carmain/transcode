@@ -198,13 +198,13 @@ class UploadEnd(APIView):
 
         if uploaded_file.media_type == "video":
           available_types = settings.VIDEO_TYPES
-        elif: uploaded_file.media_type == "audio":
+        elif uploaded_file.media_type == "audio":
           available_types = settings.AUDIO_TYPES
 
         return Response({
           'success': True,
           'file_uuid': uploaded_file.uuid,
-          'price': get_price(uploaded_file.duration),
+          'price': get_price(uploaded_file.duration / 60),
           "available_types": available_types
         })
 
@@ -240,11 +240,12 @@ class checkout(APIView):
 
     def post(self, request):
         transcode_file = TranscodeFile.objects.get(uuid=request.data.get('fileUUID'))
+        price = utils.get_price(transcode_file.duration / 60)
         gateway = braintree.BraintreeGateway(
             access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
         result = gateway.transaction.sale({
-            "amount": 1,
+            "amount": price,
             "payment_method_nonce": payment_method_nonce,
             "order_id": uuid.uuid4().hex,
             "descriptor": {

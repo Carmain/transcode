@@ -2,7 +2,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 
 def get_price(duration):
-  return settings.CONVERT_PRICE_PER_MINUTE * duration
+  price = settings.CONVERT_PRICE_PER_MINUTE * duration
+  return max(price, 0.01)
 
 def send_completion_mail(user, transcode_file):
   send_mail(
