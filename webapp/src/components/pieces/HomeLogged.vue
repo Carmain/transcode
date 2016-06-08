@@ -21,13 +21,10 @@
               <span class="glyphicon glyphicon-film" aria-hidden="true"></span>
             </template>
           </td>
-          <td>{{ file.name }}</td>
-          <td>{{ file.convert_to }}</td>
-          <td>{{ file.date }}</td>
+          <td>{{ file.transcode_file.name }}</td>
+          <td>{{ file.fileType }}</td>
+          <td>{{ formattedDate(file.date) }}</td>
           <td>
-            <button type="button" class="btn btn-default btn-xs" @click="view()">
-              View
-            </button>
             <button type="button" class="btn btn-danger btn-xs" @click="remove()">
               Remove
             </button>
@@ -39,55 +36,33 @@
 </template>
 
 <script>
-  export default {
-    data () {
-      return {
-        files: [
-          {
-            name: 'yolo.mp3',
-            convert_to: 'wav',
-            date: '17/05/2016',
-            type: 'music'
-          },
-          {
-            name: 'do_the_barrel_roll.mp4',
-            convert_to: 'mp3',
-            date: '4/05/2016',
-            type: 'music'
-          },
-          {
-            name: 'hello.m4v',
-            convert_to: 'wmv',
-            date: '17/03/2016',
-            type: 'video'
-          },
-          {
-            name: 'creep.wma',
-            convert_to: 'mp3',
-            date: '22/03/2016',
-            type: 'music'
-          },
-          {
-            name: 'lolilol.m4v',
-            convert_to: 'wmv',
-            date: '24/12/2015',
-            type: 'video'
-          }
-        ]
-      }
+import config from "../../config.js";
+import moment from "moment";
+
+export default {
+  data () {
+    return {
+      files: []
+    };
+  },
+  ready () {
+    this.$http.get(config.CONVERTED_FILES + '4/').then((res) => {
+      console.log(res.data);
+      this.files = res.data;
+    });
+  },
+  methods: {
+    isFileMusic: function (file) {
+      return file.transcode_file.media_type !== 'video';
     },
-    methods: {
-      isFileMusic: function (file) {
-        return file.type !== 'video'
-      },
 
-      view: function () {
-        alert("View");
-      },
+    formattedDate(date) {
+      return moment(date).format('LLL');
+    },
 
-      remove: function () {
-        alert("Remove")
-      }
+    remove: function () {
+      alert("Remove");
     }
   }
+};
 </script>
