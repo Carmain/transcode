@@ -6,3 +6,9 @@ UPLOAD_CHUNK_SIZE = 1024
 CONVERT_PRICE_PER_MINUTE = (1 / 60)
 
 PAYPAL_ACCESS_TOKEN = "xxxxxxxxx$xxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxx"
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'xxxxxxxxx@xxxxxx.xxx'
+EMAIL_HOST_PASSWORD = 'xxxxxxxxx'
+EMAIL_PORT = 587
