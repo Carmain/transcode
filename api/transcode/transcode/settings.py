@@ -54,6 +54,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'transcode.urls'
 
 WSGI_APPLICATION = 'transcode.wsgi.application'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 
 # Database

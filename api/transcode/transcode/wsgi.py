@@ -16,6 +16,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "api.settings")
 
 def monitor(app, lock_path):
+    from api.utils import send_completion_mail
     from api.models import TranscodeFile, ConvertJob, ConvertedFile
 
     print("Celery monitoring started...")
@@ -47,6 +48,8 @@ def monitor(app, lock_path):
       convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
       tr_file = convert_job.file
       cv_file = ConvertedFile.objects.create(fileType="mkv", transcode_file=tr_file)
+      user = tr_file.owner
+      send_completion_mail(user, tr_file)
       print("ConvertJob succeeded")
 
 
