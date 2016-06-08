@@ -6,11 +6,10 @@
         <h2>Oh, I’m sorry. Did I break your concentration?</h2>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <style scoped>
-
   .white {
     color: white;
   }
