@@ -109,13 +109,13 @@ SUPPORTED_FILES = (
 VIDEO_TYPES = (
   ("mkv", "h264"),
   ("avi", "divx"),
-  ("mp4", "h264")
+  ("mp4", "h264"),
 )
 
 AUDIO_TYPES = (
-  ("mp3", "mp3")
-  ("ogg", "vorbis")
-  ("mp4", "aac")
+  ("mp3", "mp3"),
+  ("ogg", "vorbis"),
+  ("mp4", "aac"),
 )
 
 # Static files (CSS, JavaScript, Images)

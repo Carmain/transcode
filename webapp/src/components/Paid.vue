@@ -35,17 +35,8 @@
     <form v-show="payment_succeed">
       <div class="form-group">
         <label class="control-label" for="convert-type">I want my file converted into</label>
-        <select class="form-control" id="convert-type">
-          <optgroup label="Audio">
-            <template v-for="extension in format.audio">
-              <option v-bind:value="extension">{{ extension }}</option>
-            </template>
-          </optgroup>
-          <optgroup label="Video">
-            <template v-for="extension in format.video">
-              <option v-bind:value="extension">{{ extension }}</option>
-            </template>
-          </optgroup>
+        <select class="form-control" id="convert-type" v-model="selected">
+          <option v-for="extension in formatArray" value="{{$index}}">{{ extension[0] }}</option>
         </select>
       </div>
 
@@ -73,10 +64,8 @@ export default {
       error_handler: false,
       amount : '',
       messages_content: [],
-      format: {
-        audio: ['MP3', 'MPEG4', 'WAV'],
-        video: ['VID', 'YOLO', 'HUHU']
-      },
+      formatArray: [],
+      selected: 0,
       ranges: [
         {
           duration: '1:00:00',
@@ -96,6 +85,9 @@ export default {
   ready () {
     let that = this;
     let price = sessionStorage.getItem("price");
+    this.formatArray = JSON.parse(sessionStorage.getItem("encoding"));
+    console.log(this.formatArray);
+
     this.amount = price;
     this.$http.get(config.PAYPAL_TOKEN).then((res) => {
       let paypalToken = res.data.token;
@@ -138,8 +130,11 @@ export default {
 
     convertFiles: function() {
       let uuid = sessionStorage.getItem("fileUUID");
+
       let jsonObject = {
-        file: uuid
+        file: uuid,
+        format: this.formatArray[this.selected][0],
+        codec: this.formatArray[this.selected][1]
       };
 
       this.$http.post(config.CONVERT_URL, jsonObject).then((res) => {
