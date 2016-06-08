@@ -240,7 +240,7 @@ class checkout(APIView):
 
     def post(self, request):
         transcode_file = TranscodeFile.objects.get(uuid=request.data.get('fileUUID'))
-        price = utils.get_price(transcode_file.duration / 60)
+        price = get_price(transcode_file.duration / 60)
         gateway = braintree.BraintreeGateway(
             access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
