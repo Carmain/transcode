@@ -25,7 +25,7 @@
           <td>{{ file.fileType }}</td>
           <td>{{ formattedDate(file.date) }}</td>
           <td>
-            <button type="button" class="btn btn-danger btn-xs" @click="remove()">
+            <button type="button" class="btn btn-danger btn-xs" @click="remove(file.transcode_file.uuid)">
               Remove
             </button>
           </td>
@@ -46,12 +46,15 @@ export default {
     };
   },
   ready () {
-    this.$http.get(config.CONVERTED_FILES).then((res) => {
-      console.log(res.data);
-      this.files = res.data;
-    });
+    this.getAllTheConvertedFiles();
   },
   methods: {
+    getAllTheConvertedFiles: function() {
+      this.$http.get(config.CONVERTED_FILES).then((res) => {
+        this.files = res.data;
+      });
+    },
+
     isFileMusic: function (file) {
       return file.transcode_file.media_type !== 'video';
     },
@@ -60,8 +63,12 @@ export default {
       return moment(date).format('LLL');
     },
 
-    remove: function () {
-      alert("Remove");
+    remove: function (uuid) {
+      this.$http.delete(config.DELETE_CONVERTED_FILE + uuid + "/").then((res) => {
+        if (res.data.success) {
+          this.getAllTheConvertedFiles();
+        }
+      });
     }
   }
 };
