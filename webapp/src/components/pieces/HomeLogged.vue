@@ -46,7 +46,7 @@ export default {
     };
   },
   ready () {
-    this.$http.get(config.CONVERTED_FILES + '4/').then((res) => {
+    this.$http.get(config.CONVERTED_FILES).then((res) => {
       console.log(res.data);
       this.files = res.data;
     });
