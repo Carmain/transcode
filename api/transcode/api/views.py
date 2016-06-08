@@ -196,11 +196,17 @@ class UploadEnd(APIView):
         except TypeError as e:
           return Response({'success': False, 'message': str(e)})
 
+        if uploaded_file.media_type == "video":
+          available_types = settings.VIDEO_TYPES
+        elif: uploaded_file.media_type == "audio":
+          available_types = settings.AUDIO_TYPES
+
         return Response({
           'success': True,
           'file_uuid': uploaded_file.uuid,
-          'price': get_price(uploaded_file.duration)
-          })
+          'price': get_price(uploaded_file.duration),
+          "available_types": available_types
+        })
 
 
 @permission_classes((IsAuthenticated, ))
@@ -267,13 +273,6 @@ class statistics(APIView):
 
         return Response({"converted_files": converted_files, "users": users})
 
-
-@permission_classes((AllowAny, ))
-class get_file_types(APIView):
-    parser_context = (JSONParser, )
-
-    def get(self, request):
-        return Response({"available_types": settings.SUPPORTED_FILES})
 
 class get_converted_files(APIView):
   parser_context = (JSONParser, )
