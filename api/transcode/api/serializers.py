@@ -15,7 +15,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
 class TranscodeFileSerializer(serializers.HyperlinkedModelSerializer):
   class Meta:
     model = TranscodeFile
-    fields = ('fileType', 'name', 'duration', 'size', 'media_type')
+    fields = ('fileType', 'name', 'duration', 'size', 'media_type', 'uuid')
 
 
 class ConvertedFileSerializer(serializers.HyperlinkedModelSerializer):
