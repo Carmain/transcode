@@ -95,11 +95,27 @@ JWT_AUTH = {
   'JWT_EXPIRATION_DELTA': datetime.timedelta(days=1)
 }
 
+# (extension, name)
 SUPPORTED_FILES = (
     ("mvk", "Matroska"),
-    ("mp3", "MPEG 3 Audio"),
-    ("mp4", "MPEG 4 Video"),
+    ("mp3", "MPEG 3"),
+    ("mp4", "MPEG 4"),
     ("avi", "Audio Video Interleaved"),
+    ("wav", "Wave"),
+    ("ogg", "Theora Vorbis"),
+)
+
+# (format, codec)
+VIDEO_TYPES = (
+  ("mkv", "h264"),
+  ("avi", "divx"),
+  ("mp4", "h264")
+)
+
+AUDIO_TYPES = (
+  ("mp3", "mp3")
+  ("ogg", "vorbis")
+  ("mp4", "aac")
 )
 
 # Static files (CSS, JavaScript, Images)
