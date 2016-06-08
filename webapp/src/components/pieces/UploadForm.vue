@@ -16,7 +16,7 @@
       <input class="form-control" id="url" type="text" v-model="url">
     </div>
     <hr />
-    <button type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
+    <button v-show="!uploadError" type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
   </form>
 </template>
 
@@ -35,7 +35,8 @@ export default {
       url: '',
       uploadType: '',
       sentBytes: 0,
-      totalBytes: 0
+      totalBytes: 0,
+      uploadError: false,
     };
   },
   methods: {
@@ -75,12 +76,14 @@ export default {
         ).then((res) => {
           if (!res.data.success) {
             // Something went wrong
+            this.uploadError = true;
             this.$dispatch("errorUpload");
             return;
           }
 
           if (res.data.remains != (remainingBytes - fileArray.byteLength)) {
             // Bytes sent & bytes received are not equals
+            this.uploadError = true;
             this.$dispatch("bytesNotEquals");
             return;
           }
@@ -108,6 +111,7 @@ export default {
           sessionStorage.setItem("price", res.data.price);
           this.$dispatch("end");
         } else {
+          this.uploadError = true;
           this.$dispatch("errorUploadEnd", response.data.message);
         }
       });
