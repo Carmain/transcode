@@ -245,7 +245,7 @@ class checkout(APIView):
             access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
         result = gateway.transaction.sale({
-            "amount": price,
+            "amount": str(price),
             "payment_method_nonce": payment_method_nonce,
             "order_id": uuid.uuid4().hex,
             "descriptor": {
