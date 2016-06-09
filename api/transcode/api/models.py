@@ -114,3 +114,5 @@ class ConvertJob(models.Model):
     state = models.IntegerField(default=0)
     file = models.ForeignKey("TranscodeFile")
     task_uuid = models.CharField(max_length=32)
+    dest_format = models.CharField(max_length=16)
+    dest_codec = models.CharField(max_length=32)

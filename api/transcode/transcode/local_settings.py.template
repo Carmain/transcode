@@ -12,3 +12,5 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'xxxxxxxxx@xxxxxx.xxx'
 EMAIL_HOST_PASSWORD = 'xxxxxxxxx'
 EMAIL_PORT = 587
+
+BASE_DOMAIN = "localhost"
