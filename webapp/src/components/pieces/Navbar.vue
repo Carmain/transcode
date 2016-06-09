@@ -7,7 +7,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" v-link="{ path:'/'}">
+        <a class="navbar-brand" v-link="{path:'/'}">
           <template v-if="user.authenticated">
             <gravatar size='25' v-bind:email='user.email'></gravatar> Welcome {{ user.username }}
           </template>
@@ -18,14 +18,14 @@
       </div>
       <div class="navbar-collapse collapse navbar-right navbar-responsive-collapse">
         <ul class="nav navbar-nav">
-          <li><a v-link="'convert'">Convert</a></li>
+          <li><a v-link="{path:'/convert'}">Convert</a></li>
           <template v-if="user.authenticated">
-            <li><a v-link="'update-my-profile'">Update my profile</a></li>
+            <li><a v-link="{path:'/update-my-profile'}">Update my profile</a></li>
             <li><a @click="logout()">Logout</a></li>
           </template>
           <template v-else>
-            <li><a v-link="'connect'">Connect</a></li>
-            <li><a v-link="'register'">Register</a></li>
+            <li><a v-link="{path:'/connect'}">Connect</a></li>
+            <li><a v-link="{path:'/register'}">Register</a></li>
           </template>
         </ul>
       </div>
