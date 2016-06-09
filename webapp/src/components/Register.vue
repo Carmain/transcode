@@ -46,9 +46,7 @@
     </form>
 
     <div class="error-handler">
-      <template v-for="sentence in messages_content">
-        <message tag="danger" title="Waning" v-bind:message="sentence"></message>
-      </template>
+      <message v-for="sentence in error_registration" tag="danger" title="Waning" v-bind:message="sentence"></message>
     </div>
   </div>
 </template>
@@ -84,7 +82,7 @@ export default {
         password_confirmation: '',
         recaptcha_verify: ''
       },
-      messages_content: [],
+      error_registration: [],
       recaptcha_pub_key : config.RECAPTCHA_PUBLIC_KEY
     };
   },
@@ -96,7 +94,7 @@ export default {
           auth.login(this.credentials, '/');
         },
         function (response) {
-          this.messages_content = response.data.error_messages;
+          this.error_registration = response.data.error_messages;
         }
       );
     },
