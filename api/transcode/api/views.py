@@ -314,6 +314,6 @@ class download_converted_file(APIView):
       FileWrapper(open(file_path), chunk_size),
       content_type=mimetypes.guess_type(file_path)[0]
     )
-    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Length'] = path.getsize(the_file)
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
