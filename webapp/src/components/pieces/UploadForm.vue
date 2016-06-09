@@ -122,7 +122,6 @@ export default {
 
     progress: function () {
       let percentage = Math.round((this.sentBytes / this.totalBytes) * 100);
-      this.$dispatch("errorUpload");
       this.$dispatch("progress", percentage);
     },
 
