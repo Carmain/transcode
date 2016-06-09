@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^converted-files/$', api_views.get_converted_files.as_view()),
     url(r'^converted-files/(?P<limit>[0-9]+)/$', api_views.get_converted_files.as_view()),
     url(r'^delete-converted-file/(?P<uuid>[0-9a-f]{32})/$', api_views.delete_converted_file.as_view()),
+    url(r'^download-converted-file/(?P<uuid>[0-9a-f]{32})/$', api_views.download_converted_file.as_view()),
 ]

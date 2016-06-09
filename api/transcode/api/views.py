@@ -1,3 +1,4 @@
+import mimetypes
 import hashlib
 import uuid
 import datetime
@@ -21,6 +22,8 @@ from api.utils import get_price
 from django.db.models import F
 from django.conf import settings
 from os import path
+from django.http import StreamingHttpResponse
+from wsgiref.util import FileWrapper
 
 
 @permission_classes((AllowAny, ))
@@ -299,3 +302,18 @@ class delete_converted_file(APIView):
       return Response({'success': False})
 
     return Response({'success': True})
+
+
+class download_converted_file(APIView):
+  def get(self, request, uuid):
+    conv_file = ConvertedFile.objects.get(uuid=uuid)
+    file_path = conv_file.path
+    filename = "{}.{}".format(conv_file.transcode_file.name, conv_file.fileType)
+    chunk_size = 8192
+    response = StreamingHttpResponse(
+      FileWrapper(open(file_path), chunk_size),
+      content_type=mimetypes.guess_type(file_path)[0]
+    )
+    response['Content-Length'] = os.path.getsize(the_file)
+    response['Content-Disposition'] = "attachment; filename=%s" % filename
+    return response
