@@ -230,7 +230,7 @@ class launch_conversion(APIView):
         dest_format = request.data.get("format")
         dest_codec = request.data.get("codec")
         dest_type = (dest_format, dest_codec)
-        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid, dest_type=dest_type)
+        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid, dest_type)
         return Response({'success': True})
 
 
@@ -240,12 +240,12 @@ class checkout(APIView):
 
     def post(self, request):
         transcode_file = TranscodeFile.objects.get(uuid=request.data.get('fileUUID'))
-        price = get_price(transcode_file.duration / 60)
+        price = utils.get_price(transcode_file.duration / 60)
         gateway = braintree.BraintreeGateway(
             access_token=settings.PAYPAL_ACCESS_TOKEN)
         payment_method_nonce = request.data.get("payment_method_nonce")
         result = gateway.transaction.sale({
-            "amount": str(price),
+            "amount": price,
             "payment_method_nonce": payment_method_nonce,
             "order_id": uuid.uuid4().hex,
             "descriptor": {
