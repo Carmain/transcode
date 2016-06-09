@@ -164,10 +164,11 @@ class UploadChunk(APIView):
         uploadSession = UploadSession.objects.get(uuid=uuid)
         userFile = open(uploadSession.file.path, "ab")
         userFile.write(request.data)
-
-        uploadSession.state = 1
-        uploadSession.receivedBytes = F("receivedBytes") + len(request.data)
-        uploadSession.save()
+        uploadSession.update(
+          state=1,
+          receivedBytes = F("receivedBytes") + len(request.data)
+        )
+        uploadSession.refresh_from_db()
 
         return Response({'success': True,
                          'remains': uploadSession.remainingBytes})
