@@ -161,15 +161,12 @@ class UploadChunk(APIView):
 
     # TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
     def post(self, request, uuid):
-        uploadSessions = UploadSession.objects.filter(uuid=uuid)
-        uploadSession = uploadSessions[0]
+        uploadSession = UploadSession.objects.get(uuid=uuid)
         userFile = open(uploadSession.file.path, "ab")
         userFile.write(request.data)
-        uploadSessions.update(
-          state=1,
-          receivedBytes = F("receivedBytes") + len(request.data)
-        )
-        uploadSession.refresh_from_db()
+        uploadSession.state = 1
+        uploadSession.receivedBytes += len(request.data)
+        uploadSession.save()
 
         return Response({'success': True,
                          'remains': uploadSession.remainingBytes})
