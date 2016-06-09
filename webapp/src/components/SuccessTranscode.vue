@@ -34,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-  .white {
+  :link, :visited, :hover, :active, .white {
     color: white;
   }
 
