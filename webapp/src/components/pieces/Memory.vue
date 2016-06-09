@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import config from '../../config'
+import config from '../../config';
 import Chart from 'chart.js';
 
 export default {
@@ -18,7 +18,6 @@ export default {
   },
   ready () {
     this.$http.get(config.PROFILE_URL).then((res) => {
-      console.log(res);
       this.memory = [res.data.used_space, res.data.free_space];
 
       this.displayChart();

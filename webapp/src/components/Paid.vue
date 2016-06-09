@@ -86,7 +86,6 @@ export default {
     let that = this;
     let price = sessionStorage.getItem("price");
     this.formatArray = JSON.parse(sessionStorage.getItem("encoding"));
-    console.log(this.formatArray);
 
     this.amount = price;
     this.$http.get(config.PAYPAL_TOKEN).then((res) => {
@@ -124,7 +123,6 @@ export default {
   },
   methods: {
     roundedPrice: function(price) {
-      console.log(price);
       return parseFloat(price).toFixed(2);
     },
 
@@ -141,7 +139,6 @@ export default {
         if(res.data.success) {
           this.$route.router.go({ name: 'success', params: { fileUUID: uuid }});
         } else {
-          console.log("error");
           let error_message = res.data.message;
           if (error_message) {
             that.messages_content.push(res.data.message);
