@@ -307,7 +307,7 @@ class delete_converted_file(APIView):
 @permission_classes((AllowAny, ))
 class download_converted_file(APIView):
   def get(self, request, uuid):
-    conv_file = ConvertedFile.objects.get(uuid=uuid)
+    conv_file = ConvertedFile.objects.get(file_uuid=uuid)
     file_path = conv_file.path
     filename = "{}.{}".format(conv_file.transcode_file.name, conv_file.fileType)
     chunk_size = 8192

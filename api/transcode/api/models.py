@@ -44,6 +44,7 @@ class ConvertedFile(FileMixin, models.Model):
     fileType = models.CharField(choices=settings.SUPPORTED_FILES, max_length=5)
     transcode_file = models.ForeignKey("TranscodeFile")
     date = models.DateTimeField(auto_now_add=True)
+    file_uuid = models.CharField(default=generate_uuid4, max_length=32)
 
     @property
     def uuid(self):
