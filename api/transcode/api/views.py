@@ -333,7 +333,13 @@ class download_converted_file(APIView):
 
 class update_profile(APIView):
   def post(self, request):
-    request.user.update(**request.data)
+    obj, created = request.user.update_or_create(**request.data)
+
+    if created:
+      obj.delete()
+      return Response({'success': False})
+
+    return Response({'success': True})
 
 class update_password(APIView):
   def post(self, request):
