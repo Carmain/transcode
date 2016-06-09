@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 
 def get_price(duration):
   price = settings.CONVERT_PRICE_PER_MINUTE * duration
-  return max(price, 0.01)
+  return round(max(price, 0.01) ,2)
 
 def send_completion_mail(user, transcode_file):
   textual_mail_body = "You can view your transcoded files on the homepage when you are connected."
@@ -24,5 +24,5 @@ def send_completion_mail(user, transcode_file):
     "Transcode <transcode@gmail.com>",
     [user.email],
     fail_silently=True,
-    html_mail=html_mail_body
+    html_message=html_mail_body
   )

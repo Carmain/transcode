@@ -110,6 +110,7 @@ VIDEO_TYPES = (
   ("mkv", "h264"),
   ("avi", "divx"),
   ("mp4", "h264"),
+  ("Audio", "mp3"),
 )
 
 AUDIO_TYPES = (
