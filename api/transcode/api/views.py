@@ -333,11 +333,13 @@ class download_converted_file(APIView):
 
 class update_profile(APIView):
   def post(self, request):
-    obj, created = request.user.update_or_create(**request.data)
+    usr = request.user
+    usr.first_name = request.data.get("first_name")
+    usr.last_name = request.data.get("last_name")
+    usr.email = request.data.get("email")
+    usr.birthdate = datetime.datetime.strptime(raw_date, "%Y-%m-%d").date()
 
-    if created:
-      obj.delete()
-      return Response({'success': False})
+    usr.save()
 
     return Response({'success': True})
 
