@@ -25,6 +25,9 @@
           <td>{{ file.fileType }}</td>
           <td>{{ formattedDate(file.date) }}</td>
           <td>
+            <button type="button" class="btn btn-info btn-xs" @click="download(file.file_uuid)">
+              Download
+            </button>
             <button type="button" class="btn btn-danger btn-xs" @click="remove(file.transcode_file.uuid)">
               Remove
             </button>
@@ -61,6 +64,14 @@ export default {
 
     formattedDate(date) {
       return moment(date).format('LLL');
+    },
+
+    download: function(uuid) {
+      window.location = config.DOWNLOAD_CONVERTED_FILE + uuid + "/";
+    },
+
+    downloadLink: function(uuid) {
+      return config.DOWNLOAD_CONVERTED_FILE + uuid + "/";
     },
 
     remove: function (uuid) {

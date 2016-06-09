@@ -3,6 +3,7 @@ const API_URL = "//transcode_wololo.wololo.fr";
 const STATISTICS = API_URL + "/statistics/";
 const CONVERTED_FILES = API_URL + "/converted-files/";
 const DELETE_CONVERTED_FILE = API_URL + "/delete-converted-file/";
+const DOWNLOAD_CONVERTED_FILE = API_URL + "/download-converted-file/";
 
 const LOGIN_URL = API_URL + "/auth/";
 const REGISTER_URL = API_URL + "/register/";
@@ -13,7 +14,6 @@ const UPLOAD_START_URL = API_URL + "/upload-start/";
 const UPLOAD_CHUNK_URL = API_URL + "/upload-chunk/";
 const UPLOAD_END_URL = API_URL + "/upload-end/";
 const CONVERT_URL = API_URL + "/launch-conversion/";
-
 
 const PAYPAL_TOKEN = API_URL + "/paypal-token/";
 const PAYPAL_CHECKOUT = API_URL + "/checkout/";
@@ -26,6 +26,7 @@ export default {
   STATISTICS,
   CONVERTED_FILES,
   DELETE_CONVERTED_FILE,
+  DOWNLOAD_CONVERTED_FILE,
   LOGIN_URL,
   REGISTER_URL,
   PROFILE_URL,
