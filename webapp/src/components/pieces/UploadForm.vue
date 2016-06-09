@@ -1,22 +1,11 @@
 <template>
+  <hr />
   <form>
-    <div class="radio-inline">
-      <label><input type="radio" name="upload" value="file" checked="checked" v-model="uploadType">Upload a file</label>
-    </div>
-    <div class="radio-inline">
-      <label><input type="radio" name="upload" value="url" v-model="uploadType">Provide an URL</label>
-    </div>
-
-    <div class="form-group" v-if="uploadType === 'file'">
+    <div class="form-group">
       <label class="control-label" for="upload">Upload your file here</label>
       <input type="file" @change="loadFile($event.target.files)">
+      <button v-show="!uploadError" type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
     </div>
-    <div class="form-group" v-if="uploadType === 'url'">
-      <label class="control-label" for="url">Or provide us an URL</label>
-      <input class="form-control" id="url" type="text" v-model="url">
-    </div>
-    <hr />
-    <button v-show="!uploadError" type="button" class="btn btn-primary pull-right" @click="uploadStart()">Submit</button>
   </form>
 </template>
 
@@ -32,8 +21,6 @@ export default {
   data() {
     return {
       file: '',
-      url: '',
-      uploadType: '',
       sentBytes: 0,
       totalBytes: 0,
       uploadError: false,
