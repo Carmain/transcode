@@ -304,6 +304,7 @@ class delete_converted_file(APIView):
     return Response({'success': True})
 
 
+@permission_classes((AllowAny, ))
 class download_converted_file(APIView):
   def get(self, request, uuid):
     conv_file = ConvertedFile.objects.get(uuid=uuid)
