@@ -22,7 +22,7 @@ from api.utils import get_price
 from django.db.models import F
 from django.conf import settings
 from os import path
-from django.http import StreamingHttpResponse
+from django.http import StreamingHttpResponse, HttpResponse
 from wsgiref.util import FileWrapper
 
 
@@ -144,7 +144,7 @@ class UploadStart(APIView):
 
     def post(self, request):
         file_size = request.data.get("fileSize")
-        file_name = request.data.get("fileName")
+        file_name = path.splitext(request.data.get("fileName"))[0]
         transcodeFile = TranscodeFile.objects.create(size=file_size, name=file_name)
         uploadSession = UploadSession.objects.create(file=transcodeFile)
 
@@ -161,12 +161,15 @@ class UploadChunk(APIView):
 
     # TODO : Compare received chunk size with settings.UPLOAD_CHUNK_SIZE
     def post(self, request, uuid):
-        uploadSession = UploadSession.objects.get(uuid=uuid)
+        uploadSessions = UploadSession.objects.filter(uuid=uuid)
+        uploadSession = uploadSessions[0]
         userFile = open(uploadSession.file.path, "ab")
         userFile.write(request.data)
-        uploadSession.state = 1
-        uploadSession.receivedBytes += len(request.data)
-        uploadSession.save()
+        uploadSessions.update(
+          state=1,
+          receivedBytes = F("receivedBytes") + len(request.data)
+        )
+        uploadSession.refresh_from_db()
 
         return Response({'success': True,
                          'remains': uploadSession.remainingBytes})
@@ -310,10 +313,10 @@ class download_converted_file(APIView):
     file_path = conv_file.path
     filename = "{}.{}".format(conv_file.transcode_file.name, conv_file.fileType)
     chunk_size = 8192
+    fw = FileWrapper(open(file_path, 'rb'), chunk_size)
     response = StreamingHttpResponse(
-      FileWrapper(open(file_path), chunk_size),
+      fw,
       content_type=mimetypes.guess_type(file_path)[0]
     )
-    response['Content-Length'] = path.getsize(file_path)
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
