@@ -334,3 +334,15 @@ class download_converted_file(APIView):
 class update_profile(APIView):
   def post(self, request):
     request.user.update(**request.data)
+
+class update_password(APIView):
+  def post(self, request):
+    old_password = request.data.get("oldPassword")
+    new_password = request.data.get("newPassword")
+    if not request.user.check_password(old_password):
+      return Response({'success': False, 'message': 'Wrong Password.'})
+
+    request.user.set_password(new_password)
+    request.user.save()
+
+    return Response({'success': True})
