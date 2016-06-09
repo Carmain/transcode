@@ -13,13 +13,14 @@ export default {
   },
 
   login(credentials, redirect) {
-    Vue.http.post(config.LOGIN_URL, credentials).then((res) => {
+    let promise = Vue.http.post(config.LOGIN_URL, credentials).then((res) => {
       localStorage.setItem("jwt", res.data.token);
       this.user.authenticated = true;
       this.setVueHeader();
-
       return this.loadUserInformations();
-    }).then((user) => {
+    });
+
+    promise.then((user) => {
       this.user.username = user.username;
       this.user.email = user.email;
       let fileUploaded = sessionStorage.getItem("fileUUID");
@@ -33,7 +34,9 @@ export default {
       if (redirect) {
         router.go(redirect);
       }
-    }).catch(e => console.log(e));
+    });
+
+    return promise;
   },
 
   loadUserInformations() {
