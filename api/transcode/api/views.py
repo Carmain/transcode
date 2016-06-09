@@ -337,7 +337,7 @@ class update_profile(APIView):
     usr.first_name = request.data.get("first_name")
     usr.last_name = request.data.get("last_name")
     usr.email = request.data.get("email")
-    usr.birthdate = datetime.datetime.strptime(raw_date, "%Y-%m-%d").date()
+    usr.birthdate = datetime.datetime.strptime(request.data.get("birthdate"), "%Y-%m-%d").date()
 
     usr.save()
 
