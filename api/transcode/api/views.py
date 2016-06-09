@@ -330,3 +330,7 @@ class download_converted_file(APIView):
     )
     response['Content-Disposition'] = "attachment; filename=%s" % filename
     return response
+
+class update_profile(APIView):
+  def post(self, request):
+    request.user.update(**request.data)
