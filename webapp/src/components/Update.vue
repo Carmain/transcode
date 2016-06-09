@@ -14,11 +14,7 @@
             <div class="col-md-10 col-sm-9 col-xs-8">
               <div class="form-group">
                 <label class="control-label" for="email">Email</label>
-                <input class="form-control" id="email" type="email" v-model="user.old_email">
-              </div>
-              <div class="form-group">
-                <label class="control-label" for="new-email">New email</label>
-                <input class="form-control" id="new-email" type="email" v-model="user.new_email">
+                <input class="form-control" id="email" type="email" v-model="user.email">
               </div>
             </div>
             <div class="col-md-2 col-sm-3 col-xs-4">
@@ -28,7 +24,7 @@
           <div class="row">
             <div class="form-group col-md-6 col-sm-6">
               <label class="control-label" for="first-name">First name</label>
-              <input class="form-control" id="first-name" type="text" v-model="user.firstname">
+              <input class="form-control" id="first-name" type="text" v-model="user.first_name">
             </div>
             <div class="form-group col-md-6 col-sm-6">
               <label class="control-label" for="last-name">Last name</label>
@@ -39,7 +35,7 @@
             <label class="control-label" for="birthdate">Birthdate</label>
             <input class="form-control" id="birthdate" type="date" v-model="user.birthdate">
           </div>
-          <button type="submit" class="btn btn-raised btn-primary pull-right">Submit my modifications</button>
+          <button type="button" class="btn btn-raised btn-primary pull-right" @click="updateProfile()">Submit my modifications</button>
         </form>
       </div>
       <div id="password" class="tab-pane fade">
@@ -52,55 +48,98 @@
           <form>
             <div class="form-group">
               <label class="control-label" for="password">Password</label>
-              <input class="form-control" id="password" type="password" v-model="password.old">
+              <input class="form-control" id="password" type="password" v-model="password.oldPassword">
             </div>
             <hr />
             <div class="form-group">
               <label class="control-label" for="new-password">New password</label>
-              <input class="form-control" id="new-password" type="password" v-model="password.new_password">
+              <input class="form-control" id="new-password" type="password" v-model="password.newPassword">
             </div>
-            <div class="form-group">
-              <label class="control-label" for="new-password-confirm">Confirm password</label>
-              <input class="form-control" id="new-password-confirm" type="password" v-model="password.confirmation">
-            </div>
-            <button type="submit" class="btn btn-raised btn-primary pull-right">Submit</button>
+            <button type="button" class="btn btn-raised btn-primary pull-right" @click="updatePassword()">Submit</button>
           </form>
         </fieldset>
-
-        <fieldset>
-          <legend>
-            <h3>Remove my account</h3>
-          </legend>
-          <p>Your about to delete your account. Are you shure to want to de that ?</p>
-        </fieldset>
       </div>
+    </div>
+
+    <div class="message-handler">
+      <message v-for="sentence in messages" v-bind:tag="tag" v-bind:title="title" v-bind:message="sentence"></message>
     </div>
   </div>
 </template>
 
+<style scoped>
+  .message-handler {
+    margin-top: 60px;
+  }
+</style>
+
 <script>
-import auth from '../auth'
-import Gravatar from './pieces/Gravatar'
+import auth from '../auth';
+import config from '../config';
+import Gravatar from './pieces/Gravatar';
+import Message from './pieces/Message';
+import moment from "moment";
 
 export default {
   components: {
-    Gravatar
+    Gravatar,
+    Message
   },
   data () {
     return {
+      tag: '',
+      title: '',
+      messages: [],
       user: {
-        old_email: '',
-        new_email: '',
-        firstname: '',
+        email: '',
+        first_name: '',
         last_name: '',
         birthdate: ''
       },
 
       password: {
-        old: '',
-        new_password: '',
-        confirmation: ''
+        oldPassword: '',
+        newPassword: ''
       }
+    };
+  },
+  ready () {
+    this.$http.get(config.PROFILE_URL).then((res) => {
+      this.user.email = res.data.email;
+      this.user.first_name = res.data.first_name;
+      this.user.last_name = res.data.last_name;
+      this.user.birthdate = moment(res.data.birthdate).format('YYYY-MM-DD');
+    });
+  },
+  methods: {
+    updateProfile: function() {
+      this.messages = [];
+      this.$http.post(config.UPDATE_PROFILE_URL, this.password).then((res) => {
+        if(res.data.success) {
+          this.tag = "success";
+          this.title = "Success";
+          this.messages.push("Your profile has been updated !");
+        } else {
+          this.tag = "danger";
+          this.title = "Warning";
+          this.messages.push("An error occured with the update of the profile.");
+        }
+      });
+    },
+
+    updatePassword: function() {
+      this.messages = [];
+      this.$http.post(config.UPDATE_PASSWORD_URL, this.password).then((res) => {
+        if(res.data.success) {
+          this.tag = "success";
+          this.title = "Success";
+          this.messages.push("Your password has been updated !");
+        } else {
+          this.tag = "danger";
+          this.title = "Warning";
+          this.messages.push("An error occured with the update of the password.");
+        }
+      });
     }
   },
   route: {
@@ -108,6 +147,6 @@ export default {
       return auth.user.authenticated;
     }
   }
-}
+};
 
 </script>

@@ -8,6 +8,8 @@ const DOWNLOAD_CONVERTED_FILE = API_URL + "/download-converted-file/";
 const LOGIN_URL = API_URL + "/auth/";
 const REGISTER_URL = API_URL + "/register/";
 const PROFILE_URL = API_URL + "/me/";
+const UPDATE_PROFILE_URL = API_URL + "/update-profile/";
+const UPDATE_PASSWORD_URL = API_URL + "/update-password/";
 const REFRESH_URL = API_URL + "/refresh-jwt/";
 
 const UPLOAD_START_URL = API_URL + "/upload-start/";
@@ -30,6 +32,8 @@ export default {
   LOGIN_URL,
   REGISTER_URL,
   PROFILE_URL,
+  UPDATE_PROFILE_URL,
+  UPDATE_PASSWORD_URL,
   REFRESH_URL,
   TOKEN_EXPIRATION,
   RECAPTCHA_PUBLIC_KEY,
