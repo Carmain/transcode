@@ -22,4 +22,4 @@ class ConvertedFileSerializer(serializers.HyperlinkedModelSerializer):
   transcode_file = TranscodeFileSerializer(read_only=True)
   class Meta:
     model = ConvertedFile
-    fields = ('fileType', 'date', 'transcode_file')
+    fields = ('fileType', 'date', 'transcode_file', 'file_uuid')
