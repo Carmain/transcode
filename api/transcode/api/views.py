@@ -18,6 +18,7 @@ from rest_framework import permissions
 from urllib.request import urlopen
 from urllib.parse import urlencode
 from api.utils import get_price
+from django.db.models import F
 from django.conf import settings
 from os import path
 
@@ -162,7 +163,7 @@ class UploadChunk(APIView):
         userFile.write(request.data)
 
         uploadSession.state = 1
-        uploadSession.receivedBytes += len(request.data)
+        uploadSession.receivedBytes = F("receivedBytes") + len(request.data)
         uploadSession.save()
 
         return Response({'success': True,

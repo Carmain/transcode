@@ -36,8 +36,14 @@ def monitor(app, lock_path):
     def received_task(event):
       kwargs_dict = ast.literal_eval(event.get('kwargs'))
       file_uuid = kwargs_dict.get("fileUUID")
+      dest_type = kwargs_dict.get("dest_type")
       tr_file = TranscodeFile.objects.get(uuid=file_uuid)
-      ConvertJob.objects.create(file=tr_file, task_uuid=event.get("uuid"))
+      ConvertJob.objects.create(
+        file=tr_file,
+        task_uuid=event.get("uuid"),
+        dest_format = dest_type[0],
+        dest_codec = dest_type[1]
+      )
 
     def started_task(event):
       convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
@@ -46,8 +52,10 @@ def monitor(app, lock_path):
 
     def succeeded_task(event):
       convert_job = ConvertJob.objects.get(task_uuid=event.get("uuid"))
+      convert_job.state = 3
+      convert_job.save()
       tr_file = convert_job.file
-      cv_file = ConvertedFile.objects.create(fileType="mkv", transcode_file=tr_file)
+      cv_file = ConvertedFile.objects.create(fileType=convert_job.dest_format, transcode_file=tr_file)
       user = tr_file.owner
       send_completion_mail(user, tr_file)
       print("ConvertJob succeeded")
