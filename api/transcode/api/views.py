@@ -232,8 +232,16 @@ class launch_conversion(APIView):
         file_to_convert = TranscodeFile.objects.get(uuid=request.data.get("file"))
         dest_format = request.data.get("format")
         dest_codec = request.data.get("codec")
+        audio_only = request.data.get("audioOnly")
+        if audio_only:
+          dest_format = "mp3"
         dest_type = (dest_format, dest_codec)
-        convert.delay(filePath=file_to_convert.path, fileUUID=file_to_convert.uuid, dest_type=dest_type)
+        convert.delay(
+          filePath=file_to_convert.path,
+          fileUUID=file_to_convert.uuid,
+          dest_type=dest_type,
+          audio_only=audio_only
+        )
         return Response({'success': True})
 
 
