@@ -334,13 +334,15 @@ class download_converted_file(APIView):
 class update_profile(APIView):
   def post(self, request):
     usr = request.user
-    usr.first_name = request.data.get("first_name")
-    usr.last_name = request.data.get("last_name")
-    usr.email = request.data.get("email")
-    usr.birthdate = datetime.datetime.strptime(request.data.get("birthdate"), "%Y-%m-%d").date()
+    for key,value in request.data.items():
+      if key == "birthdate":
+        usr.birthdate = datetime.datetime.strptime(value, "%Y-%m-%d").date()
+        continue
+
+      if value != "":
+        setattr(usr, key, value)
 
     usr.save()
-
     return Response({'success': True})
 
 class update_password(APIView):
