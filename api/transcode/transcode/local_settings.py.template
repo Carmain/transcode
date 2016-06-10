@@ -15,7 +15,7 @@ DATABASES = {
 RECAPTCHA_PRIVATE_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
 # Absolute path to upload directory
-UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
+UPLOAD_DIRECTORY = "/home/wololo/upload/"
 
 # Size of chunks in bytes
 UPLOAD_CHUNK_SIZE = 1e6

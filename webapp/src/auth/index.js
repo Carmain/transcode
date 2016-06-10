@@ -1,5 +1,5 @@
 import Vue from "vue";
-import router from "../main";
+import router from "../main.js";
 import config from "../config.js";
 
 export default {
