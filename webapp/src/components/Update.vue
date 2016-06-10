@@ -16,9 +16,13 @@
                 <label class="control-label" for="email">Email</label>
                 <input class="form-control" id="email" type="email" v-model="user.email">
               </div>
+              <div class="form-group">
+                <label class="control-label" for="birthdate">Birthdate</label>
+                <input class="form-control" id="birthdate" type="date" v-model="user.birthdate">
+              </div>
             </div>
             <div class="col-md-2 col-sm-3 col-xs-4">
-              <gravatar size='130' v-bind:email='user.new_email'></gravatar>
+              <gravatar size='130' v-bind:email='user.email'></gravatar>
             </div>
           </div>
           <div class="row">
@@ -30,10 +34,6 @@
               <label class="control-label" for="last-name">Last name</label>
               <input class="form-control" id="last-name" type="text" v-model="user.last_name">
             </div>
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="birthdate">Birthdate</label>
-            <input class="form-control" id="birthdate" type="date" v-model="user.birthdate">
           </div>
           <button type="button" class="btn btn-raised btn-primary pull-right" @click="updateProfile()">Submit my modifications</button>
         </form>

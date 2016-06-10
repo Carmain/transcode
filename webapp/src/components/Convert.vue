@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     computeInlineStyle: function(percentage) {
-      return  `width:${percentage}%!`;
+      return  `width:${percentage}%`;
     },
 
     uploadStarted: function() {
