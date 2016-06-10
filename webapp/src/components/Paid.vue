@@ -29,7 +29,7 @@
     <hr />
     <h2>Your bill</h2>
     <p>
-      you'll be debited from <b>{{ roundedPrice(amount) }} €</b> after this transaction.
+      you'll be debited from <b>$ {{ roundedPrice(amount) }}</b> after this transaction.
     </p>
     <div class="paypal-button" id="paypal-container"></div>
     <form v-show="payment_succeed">
