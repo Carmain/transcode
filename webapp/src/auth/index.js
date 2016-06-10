@@ -92,8 +92,10 @@ export default {
     this.setVueHeader();
     this.refreshTokenJob().then(() => {
       return this.loadUserInformations();
-    }).then((res) => {
+    }).then((user) => {
       this.state.checked = true;
+      this.user.username = user.username;
+      this.user.email = user.email;
     });
   },
 

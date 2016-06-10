@@ -8,7 +8,7 @@
         <h3>The upload started</h3>
         <div class="progress">
           <!-- TODO: style="width:{{progress}}%" doesn't work with internet explorer -->
-          <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" style="width:{{progress}}%">
+          <div class="progress-bar" role="progressbar" aria-valuenow="{{progress}}" aria-valuemin="0" aria-valuemax="100" v-bind:style="computeInlineStyle(progress)">
             {{progress}}%
           </div>
         </div>
@@ -71,6 +71,10 @@ export default {
     'end': 'uploadEnd'
   },
   methods: {
+    computeInlineStyle: function(percentage) {
+      return  `width:${percentage}%`;
+    },
+
     uploadStarted: function() {
       this.uploadStarted = true;
     },

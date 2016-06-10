@@ -7,7 +7,7 @@
       <b>The price is fixed to one USD to process one hour of video or sound.</b><br />
     </p>
     <p>
-      The following table gave you an ID of the prices :
+      The following table gave you an idea of the prices :
     </p>
 
     <table class="table table-striped">

@@ -4,6 +4,7 @@
       <div class="text-center white">
         <h1 class="title-error">Success !</h1>
         <h2>The uploaded file is being processed. <b>We will send you a message when the conversion is complete.</b></h2>
+        <h2><a v-link="{ path:'/'}">Go back to the home page</a></h2>
       </div>
     </div>
   </div>
@@ -33,7 +34,7 @@ export default {
 </script>
 
 <style scoped>
-  .white {
+  :link, :visited, :hover, :active, .white {
     color: white;
   }
 
