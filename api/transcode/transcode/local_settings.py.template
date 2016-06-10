@@ -1,16 +1,35 @@
+# Database
+# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+}
+
 # PRIVATE KEY FOR RECAPTCHA
 RECAPTCHA_PRIVATE_KEY = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
 
-UPLOAD_DIRECTORY = ""
-UPLOAD_CHUNK_SIZE = 1024
+# Absolute path to upload directory
+UPLOAD_DIRECTORY = "/home/halfman/transcode_upload/"
+
+# Size of chunks in bytes
+UPLOAD_CHUNK_SIZE = 1e6
+
+# Price of a minute to convert a video ($)
 CONVERT_PRICE_PER_MINUTE = (1 / 60)
 
+# Paypal V.Zero Api Token Credential
 PAYPAL_ACCESS_TOKEN = "xxxxxxxxx$xxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxx"
 
+
+# Email credentials
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'xxxxxxxxx@xxxxxx.xxx'
 EMAIL_HOST_PASSWORD = 'xxxxxxxxx'
 EMAIL_PORT = 587
 
+# Domain Name
 BASE_DOMAIN = "localhost"
