@@ -3,7 +3,7 @@
     <h1>Proceed to payment</h1>
     <h2>Informations</h2>
     <p>
-      Before to convert the file, you must paid !
+      Before converting your file, you must pay !
       <b>The price is fixed to one USD to process one hour of video or sound.</b><br />
     </p>
     <p>
@@ -72,11 +72,11 @@ export default {
           price: '1'
         },
         {
-          duration: '30:00',
+          duration: '0:30:00',
           price: '0.50'
         },
         {
-          duration: '00:15:00',
+          duration: '0:15:00',
           price: '0.25'
         }
       ]

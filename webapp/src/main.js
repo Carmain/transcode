@@ -18,9 +18,7 @@ Vue.use(VueResource);
 auth.checkAuth();
 
 
-let router = new VueRouter({
-  history: true
-});
+let router = new VueRouter();
 
 router.map({
   '/': {

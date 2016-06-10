@@ -8,7 +8,6 @@
 
     <div class="tab-content">
       <div id="personal-data" class="tab-pane fade in active">
-        <h2>Update my profile</h2>
         <form role="form">
           <div class="row">
             <div class="col-md-10 col-sm-9 col-xs-8">
@@ -39,25 +38,18 @@
         </form>
       </div>
       <div id="password" class="tab-pane fade">
-        <h2>Security</h2>
-
-        <fieldset>
-          <legend>
-            <h3>Change my password</h3>
-          </legend>
-          <form>
-            <div class="form-group">
-              <label class="control-label" for="password">Password</label>
-              <input class="form-control" id="password" type="password" v-model="password.oldPassword">
-            </div>
-            <hr />
-            <div class="form-group">
-              <label class="control-label" for="new-password">New password</label>
-              <input class="form-control" id="new-password" type="password" v-model="password.newPassword">
-            </div>
-            <button type="button" class="btn btn-raised btn-primary pull-right" @click="updatePassword()">Submit</button>
-          </form>
-        </fieldset>
+        <form role="form">
+          <div class="form-group">
+            <label class="control-label" for="password">Password</label>
+            <input class="form-control" id="password" type="password" v-model="password.oldPassword">
+          </div>
+          <hr />
+          <div class="form-group">
+            <label class="control-label" for="new-password">New password</label>
+            <input class="form-control" id="new-password" type="password" v-model="password.newPassword">
+          </div>
+          <button type="button" class="btn btn-raised btn-primary pull-right" @click="updatePassword()">Submit</button>
+        </form>
       </div>
     </div>
 

@@ -73,7 +73,7 @@ export default {
           glyphicon: 'glyphicon-time'
         },
         {
-          title: 'Never lose anymore your files!',
+          title: 'Never lose your files anymore!',
           text: 'We give you 10Gb to store your files for ever.',
           glyphicon: 'glyphicon-folder-open'
         },
@@ -83,7 +83,7 @@ export default {
           glyphicon: 'glyphicon-envelope'
         },
         {
-          title: 'Clever enouth!',
+          title: 'Clever enough!',
           text: 'Don\'t be embraced by unreadable files',
           glyphicon: 'glyphicon-sunglasses'
         }

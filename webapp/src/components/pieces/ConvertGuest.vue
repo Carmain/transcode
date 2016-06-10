@@ -1,5 +1,5 @@
 <template>
-  <div class="col-sm-6 text-center">
+  <div class="col-sm-6 text-center informations">
     <span class="glyphicon glyphicon-floppy-saved gl-x12" aria-hidden="true"></span>
     <h2><b>{{ converted_files }}</b> converted files all around the world</h2>
   </div>
@@ -8,6 +8,12 @@
     <h2><b>{{ registered_users }}</b> users trust the power of transcode</h2>
   </div>
 </template>
+
+<style scoped>
+  .informations {
+    margin-top: 30px;
+  }
+</style>
 
 <script>
 import config from "../../config.js";
